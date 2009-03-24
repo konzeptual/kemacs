@@ -1,0 +1,12 @@
+#contributor : Andrew Gwozdziewycz <web@apgwoz.com>
+#name : function ...(...)
+# --
+/**
+ * $1
+ *
+ * @return ${2:void}
+ */
+function ${function_name}(\$${function_args})
+{
+   $0
+}
