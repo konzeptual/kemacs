@@ -9,24 +9,26 @@
 (ido-everywhere t)
 
 ;; Now ido mode is implemented also for M-x (command completion).
-(setq ido-execute-command-cache nil)
-(defun ido-execute-command ()
-  (interactive)
-  (call-interactively
-   (intern
-    (ido-completing-read
-     "M-x "
-     (progn
-       (unless ido-execute-command-cache
-         (mapatoms (lambda (s)
-                     (when (commandp s)
-                       (setq ido-execute-command-cache
-                             (cons (format "%S" s) ido-execute-command-cache))))))
-       ido-execute-command-cache)))))
+;; (setq ido-execute-command-cache nil)
+;; (defun ido-execute-command ()
+;;   (interactive)
+;;   (call-interactively
+;;    (intern
+;;     (ido-completing-read
+;;      "M-x "
+;;      (progn
+;;        (unless ido-execute-command-cache
+;;          (mapatoms (lambda (s)
+;;                      (when (commandp s)
+;;                        (setq ido-execute-command-cache
+;;                              (cons (format "%S" s) ido-execute-command-cache))))))
+;;        ido-execute-command-cache)))))
+
 (add-hook 'ido-setup-hook
           (lambda ()
             (setq ido-enable-flex-matching t)
-            (global-set-key "\M-x" 'ido-execute-command)))
+;;;             (global-set-key "\M-x" 'ido-execute-command)
+	    ))
 
 ;; set location of the bookmark file
 (setq bookmark-default-file "~/.emacs.d/.emacs.bmk")
@@ -61,6 +63,18 @@
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file
       (find-file file))))
+
+;;; Smex
+;; library for better M-x with ido
+(add-to-list 'load-path (concat dotfiles-dir "vendor/smex"))
+(require 'smex)
+(eval-after-load "init.el" '(smex-initialize))
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c M-x") 'smex-update-and-run)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(setq smex-save-file (concat dotfiles-dir ".smex.save"))
 
 
 (provide 'kemacs-navigation)

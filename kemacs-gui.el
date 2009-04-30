@@ -3,7 +3,7 @@
 ;; Part of kEmacs
 
 ;; Put frame in the fullscreen mode.
-(set-frame-parameter nil 'fullscreen 'fullboth)
+;;(set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; nice looking theme. Good for my eyes
 (require 'color-theme)
@@ -66,6 +66,7 @@
 (require 'cursor-chg)  ; Load the library
 (change-cursor-mode 1) ; Turn on change for overwrite, read-only, and input mode
 
+(setq longlines-wrap-follows-window-size t)
 
 
 (provide 'kemacs-gui)

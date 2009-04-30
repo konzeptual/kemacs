@@ -15,12 +15,13 @@
                                            nil
                                          'fullboth)))
 
-(defun iwb ()
+(defun indendt-whole-buffer ()
   "indent whole buffer"
   (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max)))
+  ;;  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max))
+  ;;  (untabify (point-min) (point-max))
+  )
 
 ;; http://davidavraamides.net/files/mode-aware-google-help-in-emacs.html
 (defun search-site-url (keyword &optional site inurl lucky)
@@ -79,6 +80,16 @@ If strip-extension is not nil - remove file extension.
 ;;        (system-time-locale "ru_RU")
 	)
     (insert (format-time-string format))))
+
+(defun coding-hook ()
+  "Enable things that are convenient across all coding buffers."
+  (set (make-local-variable 'comment-auto-fill-only-comments) t)
+  (make-local-variable 'column-number-mode)
+  (column-number-mode t)
+  (setq save-place t)
+  (auto-fill-mode) ;; in comments only
+  (if window-system (hl-line-mode t))
+  )
 
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here

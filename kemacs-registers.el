@@ -10,7 +10,8 @@
 
 (dolist (r `((?i (file . ,(concat dotfiles-dir "init.el")))
              (?r (file . ,(concat dotfiles-dir "kemacs-registers.el")))
-             (?s (file . "~/.stumpwmrc"))
+             (?w (file . "/var/www/osoznan/wordpress/wp-content/plugins/vibrhost"))
+             (?s (file . "/home/kons/dev/sf_vibrhost/"))
 	     ))
   (set-register (car r) (cadr r)))
 

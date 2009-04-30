@@ -23,6 +23,7 @@
 	("evince" "\\.pdf$")
 	("evince" "\\.ps$")
 	("eog" "\\.jpg$")
+	("totem" "\\.mov$")
 	("totem" "\\.mp3$")
 	("totem" "\\.avi$")
 	("totem" "\\.mkv$")
@@ -49,6 +50,7 @@
 
 ;; Mode for editing oddmuse wiki (for example EmacsWiki)
 (require 'yaoddmuse)
+(setq yaoddmuse-username "KonstantinAntipin")
 
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here

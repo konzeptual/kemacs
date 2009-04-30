@@ -38,31 +38,33 @@
 
 ;; enjoy automatic indentation of yanked text in the listed programming modes
 ;; Great stuff!
-(let ((yank-indent-modes '(
-			   emacs-lisp-mode scheme-mode lisp-mode
-                           c-mode c++-mode objc-mode latex-mode
-			   plain-tex-mode php-mode yaml-mode
-			   lisp-interaction-mode
-			   )))
-  (defadvice yank (after indent-region activate)
-    (if (member major-mode yank-indent-modes)
-        (let ((mark-even-if-inactive t))
-          (indent-region (region-beginning) (region-end) nil))))
+(setq yank-indent-modes '(
+                          emacs-lisp-mode scheme-mode lisp-mode
+                                          c-mode c++-mode objc-mode latex-mode
+                                          plain-tex-mode php-mode
+                                          lisp-interaction-mode
+					  ruby-mode html-mode
+                                          ))
 
-  (defadvice yank-pop (after indent-region activate)
-    (if (member major-mode yank-indent-modes)
-        (let ((mark-even-if-inactive t))
-          (indent-region (region-beginning) (region-end) nil)))))
+(defadvice yank (after indent-region activate)
+  (if (member major-mode yank-indent-modes)
+      (let ((mark-even-if-inactive t))
+        (indent-region (region-beginning) (region-end) nil))))
+
+(defadvice yank-pop (after indent-region activate)
+  (if (member major-mode yank-indent-modes)
+      (let ((mark-even-if-inactive t))
+        (indent-region (region-beginning) (region-end) nil))))
 
 ;; super stuff for autocomplete
 (add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippet/"))
 
 (require 'yasnippet)
-(yas/initialize)
+;;(yas/initialize)
 (setq yas-dir (concat dotfiles-dir "vendor/yasnippet"))
 (yas/load-directory (concat yas-dir "/snippets"))
 ;; Trick to have my own changes to the snippets.
-;; Everything in my-snippet directory overwrites default one.
+;; Everything in my-snippet directory overwrites the default one.
 (setq yas/root-directory (concat yas-dir "/my-snippets"))
 ;; (message yas-dir)
 (yas/load-directory yas/root-directory)
@@ -81,6 +83,37 @@
 (add-to-list 'auto-mode-alist '(".stumpwmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.el[c]" . emacs-lisp-mode))
 
+;;; Auto-complete-mode
+;;;
+(require 'auto-complete)
+(global-auto-complete-mode t)
+(define-key ac-complete-mode-map "\M-n" 'ac-next)
+(define-key ac-complete-mode-map "\M-p" 'ac-previous)
+;; start completion when entered 3 characters
+(setq ac-auto-start 3)
+(require 'auto-complete-yasnippet)
+(set-default 'ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-words-in-buffer))
+
+(setq ac-modes
+      (append ac-modes
+	      '(yaml-mode
+		eshell-mode
+		)))
+
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-words-in-buffer ac-source-symbols))))
+
+(add-hook 'eshell-mode-hook
+	  (lambda ()
+	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-files-in-current-dir ac-source-words-in-buffer))))
+
+(add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools))))))
+
+
+
 ;;; setup automatic header updates
 (require 'header2)
 (defsubst header-usage ()
@@ -94,11 +127,11 @@
 (defsubst header-lisp-installation ()
   "Insert info, that I usually put in my emacs lisp file"
   (insert header-prefix-string "1. Put " (get-buffer-name) " to some directory.\n"
-	  header-prefix-string "   (for example ~/.emacs.d/vendor).\n"
-	  header-prefix-string "2. In your .emacs add this directry to the load-path like this:\n"
-	  header-prefix-string "   (add-to-list 'load-path (expand-file-name \"~/.emacs.d/vendor\"))\n"
-	  header-prefix-string "3. Add the following code to your .emacs file:\n"
-	  header-prefix-string "   (require '" (get-buffer-name 1) ")\n"))
+          header-prefix-string "   (for example ~/.emacs.d/vendor).\n"
+          header-prefix-string "2. In your .emacs add this directry to the load-path like this:\n"
+          header-prefix-string "   (add-to-list 'load-path (expand-file-name \"~/.emacs.d/vendor\"))\n"
+          header-prefix-string "3. Add the following code to your .emacs file:\n"
+          header-prefix-string "   (require '" (get-buffer-name 1) ")\n"))
 
 (setq make-header-hook '(
                          ;;header-mode-line
@@ -128,12 +161,12 @@
                          header-blank
                          header-blank
                          header-end-line
-			 header-installation
+                         header-installation
                          header-blank
-			 header-lisp-installation
+                         header-lisp-installation
                          header-blank
                          header-end-line
-			 header-usage
+                         header-usage
                          header-blank
                          header-blank
                          header-end-line

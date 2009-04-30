@@ -9,6 +9,22 @@
 (require 'flymake-php)
 (add-hook 'php-mode-user-hook 'flymake-php-load)
 
+(defun wicked/php-mode-init ()
+  "Set some buffer-local variables."
+  (setq case-fold-search t)
+  (setq indent-tabs-mode nil)
+  (setq fill-column 78)
+  (setq c-basic-offset 2)
+  (c-set-offset 'arglist-cont 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'case-label 2)
+  (c-set-offset 'arglist-close 0)
+  )
+(add-hook 'php-mode-hook 'wicked/php-mode-init)
+
+
+;; (load (concat dotfiles-dir "vendor/nxhtml/autostart.el"))
+
 ;;; PO
 ;; Convinient editon of po-files (translation)
 (autoload 'po-mode "po-mode")
@@ -19,14 +35,14 @@
 ;; Convenient editing of yaml-files
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-(add-hook 'yaml-mode-hook
-          '(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;;; Markdown
 ;;  convinient blogging
 (autoload 'markdown-mode "markdown-mode.el"
   "Major mode for editing Markdown files" t)
+;; Switch on longlines-mode.
+(add-hook 'markdown-mode-hook 'longlines-mode)
+
 (setq auto-mode-alist
       (cons '("\\.txt" . markdown-mode) auto-mode-alist))
 
@@ -36,6 +52,7 @@
   "Add proper XHTML headers and footers to markdown output"
   (save-excursion
     (set-buffer "*markdown-output*")
+    (copy-region-as-kill (point-min) (point-max))
     (goto-char (point-min))
     (insert "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n"

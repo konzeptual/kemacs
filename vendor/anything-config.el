@@ -86,6 +86,7 @@
 ;;     `anything-c-source-man-pages'  (Manual Pages)
 ;;     `anything-c-source-info-pages' (Info Pages)
 ;;     `anything-c-source-info-elisp' (Info Elisp)
+;;     `anything-c-source-info-cl'    (Info Common-Lisp)
 ;;  Command:
 ;;     `anything-c-source-complex-command-history'  (Complex Command History)
 ;;     `anything-c-source-extended-command-history' (Emacs Commands History)
@@ -232,6 +233,9 @@
 ;;  `anything-kill-ring-threshold'
 ;;    *Minimum length to be listed by `anything-c-source-kill-ring'.
 ;;    default = 10
+;;  `anything-su-or-sudo'
+;;    What command to use for root access.
+;;    default = "su"
 ;;  `anything-create--actions-private'
 ;;    User defined actions for `anything-create' / `anything-c-source-create'.
 ;;    default = nil
@@ -366,6 +370,11 @@ they will be displayed with face `file-name-shadow' if
 (defcustom anything-kill-ring-threshold 10
   "*Minimum length to be listed by `anything-c-source-kill-ring'."
   :type 'integer
+  :group 'anything-config)
+
+(defcustom anything-su-or-sudo "su"
+  "What command to use for root access."
+  :type 'string
   :group 'anything-config)
 
 
@@ -1201,7 +1210,7 @@ http://www.nongnu.org/bm/")
 ;; (anything 'anything-c-source-bookmarks-ssh)
 
 (defvar anything-c-source-bookmarks-su
-  '((name . "Bookmarks-su")
+  '((name . "Bookmarks-root")
     (init . (lambda ()
               (require 'bookmark)))
     ;; DRY
@@ -1209,7 +1218,7 @@ http://www.nongnu.org/bm/")
                     (let (lis-all lis-su)
                       (setq lis-all (bookmark-all-names))
                       (setq lis-su (loop for i in lis-all
-                                         if (string-match "^(su)" i)
+                                         if (string-match (format "^(%s)" anything-su-or-sudo) i)
                                          collect i))
                       (sort lis-su 'string-lessp))))
     (candidate-transformer anything-c-highlight-bookmark-su)
@@ -1229,7 +1238,7 @@ http://www.nongnu.org/bm/")
 (defun tv-root-logged-p ()
   (catch 'break
     (dolist (i (mapcar #'buffer-name (buffer-list)))
-      (when (string-match "*tramp/su ." i)
+      (when (string-match (format "*tramp/%s ." anything-su-or-sudo) i)
         (throw 'break t)))))
 
 
@@ -2721,7 +2730,7 @@ directory, open this directory."
     (anything-match-line-color-current-line)))
 
 (defun anything-find-file-as-root (candidate)
-  (find-file (concat "/su::" (expand-file-name candidate))))
+  (find-file (concat "/" anything-su-or-sudo "::" (expand-file-name candidate))))
 
 ;; borrowed from etags.el
 ;; (anything-c-goto-line-with-adjustment (line-number-at-pos) ";; borrowed from etags.el")

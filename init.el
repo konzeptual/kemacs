@@ -18,8 +18,10 @@
 (require 'kemacs-russification)
 (require 'kemacs-gui)
 (require 'kemacs-navigation)
+(require 'kemacs-anything)
 (require 'kemacs-development)
 (require 'kemacs-webdev)
+(require 'kemacs-ruby)
 (require 'kemacs-org)
 (require 'kemacs-bindings)
 (require 'kemacs-utils)
@@ -37,8 +39,9 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(nxhtml-skip-welcome t)
- '(php-mode-force-pear t)
+ '(php-mode-force-pear t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

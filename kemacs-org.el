@@ -1,8 +1,15 @@
 ;;; kemacs-org.el --- Configure orgmode
 ;;
 ;; Part of kEmacs
-(add-to-ordered-list 'load-path (concat dotfiles-dir "vendor/org-mode/lisp") 0)
-(require 'org) 
+
+;; Add to the first plase in the list
+(add-to-list 'load-path (concat dotfiles-dir "vendor/org-mode/lisp"))
+
+(require 'org)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Misc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; The following lines are always needed.  Choose your own keys.
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -14,6 +21,9 @@
                                         ;(add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (global-font-lock-mode t)
 
+;; Switch on longlines-mode in org-mode
+(add-hook 'org-mode-hook 'longlines-mode) ; Org buffers only
+
 (setq org-return-follows-link t)
 
 ;; Setup remember-mode to quickly catch ideas and journaling
@@ -24,80 +34,105 @@
 ;; setup templates for remember mode
 (setq org-remember-templates
       '(
-	("Journal" ?j "* NEXT %U %?\n\n  %i\n"     "journal.org")
+        ("Journal" ?j "* NEXT %U %?\n\n  %i\n"     "journal.org")
         ("Todo"    ?t "* TODO %?   %^g\n  %i\n "   "todo.org"     "Todo list")
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
         ("Songs"   ?s "* %?\n  %i\n"               "songs.org")
-	))
+        ))
 
 ;; Use all files at the org-directory + more for agenda view
 (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))
-			'("~/sketches/drafts/viborHost/viborHostinga.org")))
+                               '("~/sketches/drafts/viborHost/viborHostinga.org")))
 
 ;; Use ido whe possible
 (setq org-completion-use-ido t)
 
-;; quick overview of my commonly used tags in agenda
-(setq org-agenda-custom-commands
-      '(("G" . "GTD contexts")
-        ("Gk" "kProject" tags-todo "kProject")
-        ("Gu" "up" tags-todo "up")
-        ("Gt" "Tech" tags-todo "tech")
-        ("Ge" "Everyday Life" tags-todo "everyday")
-        ("Gr" "Relations" tags-todo "relations")
-        ("Go" "Outside" tags-todo "out")
-        ("GO" "GTD Overview"
-         (
-	  (tags-todo "kProject/-TODO-NEXT")
-          (tags-todo "up/-TODO-NEXT")
-          (tags-todo "tech/-TODO-NEXT")
-          (tags-todo "out/-TODO-NEXT")        
-          (tags-todo "relations/-TODO-NEXT")
-	  (tags-todo "everyday/-TODO-NEXT")
-          (tags-todo "-kProject-up-tech-out-relations-everyday/-TODO-NEXT")
-	  )
-         nil                      ;; i.e., no local settings
-	 )
-	("g" "GTD Block Agenda"
-         (
-	  (todo "NEXT")
-	  (tags-todo "kProject/+TODO")
-          (tags-todo "up/+TODO")
-          (tags-todo "tech/+TODO")
-          (tags-todo "out/+TODO")        
-          (tags-todo "relations/+TODO")
-	  (tags-todo "everyday/+TODO")
-          (tags-todo "-kProject-up-tech-out-relations-everyday/+TODO")
-	  )
-         nil                      ;; i.e., no local settings
-	 )
-	;; ..other commands here
-        ))
-
 ;; What tags do I frequently use
 (setq org-tag-alist '((:startgroup . nil)
                       ("kProject" . ?k)
-		      ("up" . ?u)
+                      ("up" . ?u)
                       ("tech" . ?t)
-		      ("out" . ?o)
-		      ("relations" . ?r)
-		      ("everyday" . ?e)
+                      ("out" . ?o)
+                      ("relations" . ?r)
+                      ("everyday" . ?e)
                       (:endgroup . nil)
-		      ))
+                      ))
 
 ;; Manage TODO states
 (setq org-todo-keywords
-      `((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
-       
+      '(
+        (sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
+        (sequence "FEATURE(f)" "DESIGNED(d)" "|" "IMPLEMENTED(i)")
+        (sequence "IDEA(i)" "DRAFT(d)" "MOSTLY(m)" "WRITTEN(w)" "|" "PUBLISHED(p)")
+        ))
+
+
+;;; Obsololet. With smart search in agenda I do not need it anymore.
 ;; Add associated tags suuport for org-mode
-(require 'org-assoc-tags)
-(setq org-assoc-tags '(
-		       ("emacs" "tech")
-		       ("orgmode" "emacs" "tech")
-		       ))
+;; (require 'org-assoc-tags)
+;; (setq org-assoc-tags '(
+;;                        ("emacs" "tech")
+;;                        ("symfony" "tech")
+;;                        ("orgmode" "emacs" "tech")
+;;                        ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Agenda
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Agenda-gtd is controlled by this list
+(setq org-gtd-tags '(
+                     (kProject {^k.*} vhost osru)
+                     (up)
+                     (tech symfony emacs orgmode stumpwm)
+                     (everyday)
+                     (relations)
+                     (out)
+                     ))
+
+(defun get-org-gtd-review-setup (todo-filter)
+  "Returns list, that is used to set up custom gtd-view in agenda.
+Input: list of list of tags.
+Output: formatted list for generating gtd-agenda, like this:
+                         (tags-todo \"kProject/+TODO\")
+                         (tags-todo \"up/+TODO\")
+                         (tags-todo \"tech|symfony|emacs|orgmode/+TODO\")
+                          ....
+                         (tags-todo \"-kProject-up-tech-symfony-emacs-orgmode-...../+TODO\")
+ "
+  (let (
+        (result ())
+        (all-other ())
+        )
+    (dolist (cur-tag-list org-gtd-tags)
+      (let (
+            (cur-config (mapconcat 'symbol-name cur-tag-list "|"))
+            )
+        (progn
+          (setq cur-config (cons (concat cur-config todo-filter) ()))
+          (add-to-list 'cur-config 'tags-todo)
+          (setq all-other (concat all-other "-" (mapconcat 'symbol-name cur-tag-list "-")))
+          )
+        (add-to-list 'result cur-config t)
+        ))
+    (setq all-other (cons 'tags-todo (cons (concat all-other todo-filter) ())))
+    (add-to-list 'result all-other t)
+    result
+    ))
+
+(setq org-agenda-custom-commands ())
+(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT"))
+
+(setq org-gtd-setup (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO")))
+
+
+;; Setup GTD views in agenda. constructed from variable org-gtd-tags
+(add-to-list 'org-agenda-custom-commands (append '("G") '("GTD Review") (cons org-gtd-review-setup ())))
+(add-to-list 'org-agenda-custom-commands (append '("g") '("GTD Block Agenda") (cons org-gtd-setup ())))
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
+
 

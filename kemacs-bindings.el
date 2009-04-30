@@ -5,7 +5,7 @@
 (require 'kemacs-defuns)
 
 ;; bind changing layout of keyboard
-(global-set-key [(control ?')] 'user-toggle-input-method)
+;;(global-set-key [(control ?')] 'user-toggle-input-method)
 
 ;; convenient command. kill all buffers except current.
 (global-set-key "\C-c\C-u" 'kill-other-buffers)
@@ -25,7 +25,7 @@
 ;; rebind help
 (global-set-key "\C-h" 'delete-backward-char)
 ;; Expected bahavior of M-backspace
-(global-set-key [(control meta h)] 'backward-kill-word)
+(global-set-key "\C-\M-h" 'backward-kill-word)
 
 ;; The default C-x b is too slow. Use C-; instead
 (global-set-key [(control ?\;)] 'ido-switch-buffer)
@@ -33,11 +33,13 @@
 ;; Turn on the menu bar for exploring new modes
 (global-set-key (kbd "C-<f1>") 'menu-bar-mode)
 
- ;; A better buffer list
+;; A better buffer list
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (global-set-key (kbd "C-x f") 'anything-for-files)
 ;;(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
+
+(global-set-key "\C-\M-\\" 'indendt-whole-buffer)
 
 (provide 'kemacs-bindings)
 ;;; kemacs-bindings.el ends here
