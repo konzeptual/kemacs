@@ -636,7 +636,7 @@ See also `rngalt-display-validation-header'."
   (when rngalt-validation-header
       (let ((state (car rngalt-validation-header)))
         (rng-restore-state state)))
-  (goto-char (point-min)))
+  (setq ad-return-value (goto-char (point-min))))
 
 ;; (defun rng-new-validate-prepare ()
 ;;   "Prepare to do some validation, initializing point and the state.

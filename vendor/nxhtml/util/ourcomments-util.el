@@ -1566,7 +1566,8 @@ function."
                      disable)
   "Add C-tab to ido buffer completion."
   (ourcomments-ido-mode-advice)
-  ad-return-value)
+  ;;ad-return-value
+  )
 ;; (ad-activate 'ido-mode)
 ;; (ad-deactivate 'ido-mode)
 

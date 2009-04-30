@@ -277,6 +277,7 @@
           <a href="#v1.73">v1.73</a>
           <a href="#v1.74">v1.74</a>
           <a href="#v1.75">v1.75</a>
+          <a href="#v1.76">v1.76</a>
         </div>
 
         <dl>
@@ -2546,6 +2547,24 @@
             <ul>
               <li>
                 Included css-color.el, css-palette.el and gpl.el from Niels Giesen.
+                (This replaces hexcolor.el which is no longer in nXhtml.)
+              </li>
+            </ul>
+          </dd>
+          <dt id="v1.76">1.76</dt>
+          <dd id="v1.76-dd">
+            <ul>
+              <li>
+                Fixed a long standing bug in XML validation. (I had
+                forgot to set the defadvice return value in defadvice
+                rng-set-initial-state in rngalt.el - I wonder why I
+                did not get any bug reports about this...)
+              </li>
+              <li>
+                css-color.el: bug fix for mIxEd case color names.
+              </li>
+              <li>
+                freemind.el: bug fixes.
               </li>
             </ul>
           </dd>

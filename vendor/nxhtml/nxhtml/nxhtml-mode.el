@@ -1617,8 +1617,8 @@ This mode may be turned on automatically in two ways:
   `nxthml-mode' may ask you if you want to turn this mode on if
   needed.
 - You can also choose to have it turned on automatically whenever
-  mumamo is used, see `nxhtml-validation-header-if-mumamo' for
-  further information."
+  a mumamo multi major mode is used, see
+  `nxhtml-validation-header-if-mumamo' for further information."
   :global nil
   :lighter " VH"
   :group 'nxhtml
@@ -2394,10 +2394,10 @@ The function returns true if the condition here is met."
   '(nxhtml-mode)
   "Main major modes for which to turn on validation header.
 Turn on Fictive XHTML Validation Header if main major mode for the
-used mumamo chunk family is any of those in this list.
+used mumamo multi major mode is any of those in this list.
 
-See `mumamo-set-chunk-family' for information about mumamo chunk
-families."
+See `mumamo-defined-turn-on-functions' for information about
+mumamo multi major modes."
   :type '(repeat (function :tag "Main major mode in mumamo"))
   :group 'nxhtml)
 
@@ -2432,11 +2432,11 @@ Changing this variable through custom adds/removes the function
 (defvar nxhtml-old-rng-error-face nil)
 (defun nxhtml-toggle-visible-warnings ()
   "Toggle the red underline on validation errors.
-Those can be quite disturbing when using mumamo because there
-will probably be many validation errors in for example a php
-buffer, since unfortunately the validation routines in
-`rng-validate-mode' from `nxml-mode' tries to validate the whole
-buffer as XHTML.
+Those can be quite disturbing when using mumamo multi major modes
+because there will probably be many validation errors in for
+example a php buffer, since unfortunately the validation routines
+in `rng-validate-mode' from `nxml-mode' tries to validate the
+whole buffer as XHTML.
 
 Also, because of a \(normally unimportant) bug in Emacs 22,
 the red underline that marks an error will sometimes span several

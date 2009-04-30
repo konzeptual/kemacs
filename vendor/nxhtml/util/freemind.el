@@ -2,17 +2,17 @@
 ;;
 ;; Author: Lennart Borgman (lennart O borgman A gmail O com)
 ;; Created: 2008-02-19T17:52:56+0100 Tue
-;; Version: 0.57
-;; Last-Updated: 2008-05-04T13:05:33+0200 Sun
+;; Version: 0.58
+;; Last-Updated: 2009-02-22 Sun
 ;; URL:
 ;; Keywords:
 ;; Compatibility:
 ;;
 ;; Features that might be required by this library:
 ;;
-;;   `cl', `easymenu', `font-lock', `noutline', `org', `org-compat',
-;;   `org-faces', `org-macs', `outline', `syntax', `time-date',
-;;   `xml'.
+;; `cl', `easymenu', `font-lock', `noutline', `org', `org-compat',
+;; `org-faces', `org-list', `org-macs', `outline', `syntax',
+;; `time-date', `xml'.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -38,6 +38,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Change log:
+;;
+;; 2009-02-15: Added check for next level=current+1
+;; 2009-02-21: Fixed bug in `freemind-to-org-mode'.
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -126,6 +129,7 @@
                          ((= cc ?\") "&quot;")
                          ((= cc ?\&) "&amp;")
                          ((= cc ?\<) "&lt;")
+                         ((= cc ?\>) "&gt;")
                          (t (char-to-string cc)))
                       ;; Formatting as &#number; is maybe needed
                       ;; according to a bug report from kazuo
@@ -143,6 +147,7 @@
     (setq org-str (replace-regexp-in-string "&quot;" "\"" org-str))
     (setq org-str (replace-regexp-in-string "&amp;" "&" org-str))
     (setq org-str (replace-regexp-in-string "&lt;" "<" org-str))
+    (setq org-str (replace-regexp-in-string "&gt;" ">" org-str))
     (setq org-str (replace-regexp-in-string
                "&#x\\([a-f0-9]\\{2\\}\\);"
                (lambda (m)
@@ -288,7 +293,7 @@
                         "</body>"
                         "</html>"
                         "</richcontent>\n"
-                        "</node>\n"
+                        "</node>\n" ;; ok
                         )))
       (list node-res note-res))))
 
@@ -335,6 +340,7 @@
       (setq this-rich-note (nth 1 node-notes)))
     (with-current-buffer mm-buffer
       (insert "<node text=\"" this-m2-escaped "\"")
+      (freemind-get-node-style this-m2)
       ;;(when (and (> current-level base-level) (> next-level current-level))
       (when (> next-level current-level)
         (unless (or this-children-visible
@@ -381,6 +387,10 @@
 
 (defun freemind-write-mm-buffer (org-buffer mm-buffer node-at-line)
   (with-current-buffer org-buffer
+    (dolist (node-style freemind-node-styles)
+      (when (string-match-p (car node-style) buffer-file-name)
+        (setq freemind-node-style (cadr node-style))))
+    ;;(message "freemind-node-style =%s" freemind-node-style)
     (save-match-data
       (let* ((drawers (copy-sequence org-drawers))
              drawers-regexp
@@ -404,8 +414,8 @@
         (with-current-buffer mm-buffer
           (erase-buffer)
           (insert "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
-          (insert "<map version=\"0.9.Beta_15\">\n")
-          (insert "<!-- FreeMind file, see http://freemind.sourceforge.net -->\n"))
+          (insert "<map version=\"0.9.0\">\n")
+          (insert "<!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n"))
         (save-excursion
           ;; Get special buffer vars:
           (goto-char (point-min))
@@ -499,6 +509,10 @@
                      )
                 (setq next-m2 (match-string-no-properties 2))
                 (setq next-level (length next-m1))
+                (when (> next-level current-level)
+                  (unless (= next-level (1+ current-level))
+                    (error "Next level step > +1 for node ending at line %s" (line-number-at-pos))
+                    ))
                 (setq next-children-visible
                       (not (eq 'outline
                                (get-char-property (line-end-position) 'invisible))))
@@ -511,6 +525,7 @@
                   (while (>= current-level next-level)
                     (with-current-buffer mm-buffer
                       (insert "</node>\n")
+                      ;;(insert (format "</node>\ncurrent-level=%s, next-level%s\n" current-level next-level))
                       (setq current-level (1- current-level)))))
                 (setq this-node-end (1+ next-node-end))
                 (setq this-m2 next-m2)
@@ -540,6 +555,130 @@
             (delete-trailing-whitespace)
             (goto-char (point-min))
             ))))))
+
+(defvar freemind-node-style nil "Internal use.")
+
+(defcustom freemind-node-styles nil
+  "Styles to apply to node.
+NOT READY YET."
+  :type '(repeat
+          (list :tag "Node styles for file"
+                (regexp :tag "File name")
+                (repeat
+                 (list :tag "Node"
+                       (regexp :tag "Node name regexp")
+                       (set :tag "Node properties"
+                            (list :format "%v" (const :format "" node-style)
+                                  (choice :tag "Style"
+                                          :value bubble
+                                          (const bubble)
+                                          (const fork)))
+                            (list :format "%v" (const :format "" color)
+                                  (color :tag "Color" :value "red"))
+                            (list :format "%v" (const :format "" background-color)
+                                  (color :tag "Background color" :value "yellow"))
+                            (list :format "%v" (const :format "" edge-color)
+                                  (color :tag "Edge color" :value "green"))
+                            (list :format "%v" (const :format "" edge-style)
+                                  (choice :tag "Edge style" :value bezier
+                                          (const :tag "Linear" linear)
+                                          (const :tag "Bezier" bezier)
+                                          (const :tag "Sharp Linear" sharp-linear)
+                                          (const :tag "Sharp Bezier" sharp-bezier)))
+                            (list :format "%v" (const :format "" edge-width)
+                                  (choice :tag "Edge width" :value thin
+                                          (const :tag "Parent" parent)
+                                          (const :tag "Thin" thin)
+                                          (const 1)
+                                          (const 2)
+                                          (const 4)
+                                          (const 8)))
+                            (list :format "%v" (const :format "" italic)
+                                  (const :tag "Italic font" t))
+                            (list :format "%v" (const :format "" bold)
+                                  (const :tag "Bold font" t))
+                            (list :format "%v" (const :format "" font-name)
+                                  (string :tag "Font name" :value "SansSerif"))
+                            (list :format "%v" (const :format "" font-size)
+                                  (integer :tag "Font size" :value 12)))))))
+  :group 'freemind)
+
+(defun freemind-get-node-style (node-name)
+  "NOT READY YET."
+  ;;<node BACKGROUND_COLOR="#eeee00" CREATED="1234668815593" MODIFIED="1234668815593" STYLE="bubble">
+  ;;<font BOLD="true" NAME="SansSerif" SIZE="12"/>
+  (let (node-styles
+        node-style)
+    (dolist (style-list freemind-node-style)
+      (let ((node-regexp (car style-list)))
+        (message "node-regexp=%s node-name=%s" node-regexp node-name)
+        (when (string-match-p node-regexp node-name)
+          ;;(setq node-style (freemind-do-apply-node-style style-list))
+          (setq node-style (cadr style-list))
+          (when node-style
+            (message "node-style=%s" node-style)
+            (setq node-styles (append node-styles node-style)))
+          )))))
+
+(defun freemind-do-apply-node-style (style-list)
+  (message "style-list=%S" style-list)
+  (let ((node-style fork)
+        (color red)
+        (background-color yellow)
+        (edge-color green)
+        (edge-style bezier)
+        (edge-width thin)
+        (italic t)
+        (bold t)
+        (font-name "SansSerif")
+        (font-size 12))
+    (dolist (style (cadr style-list))
+      (message "    style=%s" style)
+      (let ((what (car style)))
+        (cond
+         ((eq what 'node-style)
+          (setq node-style (cadr style)))
+         ((eq what 'color)
+          (setq color (cadr style)))
+         ((eq what 'background-color)
+          (setq background-color (cadr style)))
+
+         ((eq what 'edge-color)
+          (setq edge-color (cadr style)))
+
+         ((eq what 'edge-style)
+          (setq edge-style (cadr style)))
+
+         ((eq what 'edge-width)
+          (setq edge-width (cadr style)))
+
+         ((eq what 'italic)
+          (setq italic (cadr style)))
+
+         ((eq what 'bold)
+          (setq bold (cadr style)))
+
+         ((eq what 'font-name)
+          (setq font-name (cadr style)))
+
+         ((eq what 'font-size)
+          (setq font-size (cadr style)))
+         )
+        (insert (format " style=\"%s\"" node-style))
+        (insert (format " color=\"%s\"" color))
+        (insert (format " background_color=\"%s\"" background-color))
+        (insert ">\n")
+        (insert "<edge")
+        (insert (format " color=\"%s\"" edge-color))
+        (insert (format " style=\"%s\"" edge-style))
+        (insert (format " width=\"%s\"" edge-width))
+        (insert "/>\n")
+        (insert "<font")
+        (insert (format " italic=\"%s\"" italic))
+        (insert (format " bold=\"%s\"" bold))
+        (insert (format " name=\"%s\"" font-name))
+        (insert (format " size=\"%s\"" font-size))
+        ))))
 
 ;;;###autoload
 (defun freemind-from-org-mode-node (node-line mm-file)
@@ -820,7 +959,8 @@ PATH should be a list of steps, where each step has the form
            (insert (make-string (- level skip-levels) ?*) " " text "\n")
            ))))
     (dolist (child children)
-      (unless (stringp child)
+      (unless (or (null child)
+                  (stringp child))
         (freemind-node-to-org child (1+ level) skip-levels)))))
 
 ;; Fix-me: put back special things, like drawers that are stored in
@@ -848,8 +988,10 @@ PATH should be a list of steps, where each step has the form
                   0)))
           (with-current-buffer org-buffer
             (erase-buffer)
-            (freemind-node-to-org top-node 1 skip-levels))
-          (org-set-tags t t) ;; Align all tags
+            (freemind-node-to-org top-node 1 skip-levels)
+            (goto-char (point-min))
+            (org-set-tags t t) ;; Align all tags
+            )
           (switch-to-buffer-other-window org-buffer)
           )))))
 

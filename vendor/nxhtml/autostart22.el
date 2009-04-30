@@ -58,7 +58,7 @@
          (this-dir (file-name-directory this-file))
          ;; FIX-ME: PLACE THE PATH TO YOUR nXml HERE:
          (rng-auto-file (or (locate-library "rng-auto.el")
-                            "~/.emacs.d/lisp/nxml-mode-20041004/rng-auto.el")))
+                            "c:/emacs/u/081231/EmacsW32/nxhtml/nxml-mode-20041004/rng-auto.el")))
     (unless (file-exists-p rng-auto-file)
       (error "Can't find rng-auto.el, please edit %s" this-file))
     (load rng-auto-file)

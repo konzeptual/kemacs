@@ -6,7 +6,7 @@
  *
  * @return ${4:void}
  */
-function ${1:function_name}(\$${2:function_args})
+${5:public} function ${1:function_name}($2)
 {
    $0
 }

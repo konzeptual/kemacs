@@ -24,6 +24,7 @@
 ;;
 ;;; Change log:
 ;;
+;; Fix-me: http://www.emacswiki.org/emacs/JavaDevelopmentEnvironment
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
