@@ -12,6 +12,8 @@
              (?r (file . ,(concat dotfiles-dir "kemacs-registers.el")))
              (?w (file . "/var/www/osoznan/wordpress/wp-content/plugins/vibrhost"))
              (?s (file . "/home/kons/dev/sf_vibrhost/"))
+             (?r (file . "/home/kons/dev/depot/"))
+             (?e (file . "/home/kons/.emacs.d/"))
 	     ))
   (set-register (car r) (cadr r)))
 

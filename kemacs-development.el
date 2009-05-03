@@ -43,7 +43,7 @@
                                           c-mode c++-mode objc-mode latex-mode
                                           plain-tex-mode php-mode
                                           lisp-interaction-mode
-					  ruby-mode html-mode
+					  ruby-mode html-mode rhtml-mode
                                           ))
 
 (defadvice yank (after indent-region activate)
@@ -98,6 +98,8 @@
       (append ac-modes
 	      '(yaml-mode
 		eshell-mode
+		rhtml-mode
+		fundamental-mode
 		)))
 
 (add-hook 'emacs-lisp-mode-hook
@@ -110,7 +112,11 @@
 
 (add-hook 'ruby-mode-hook
 	  (lambda ()
-	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools))))))
+	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools)))))
+
+(add-hook 'fundamental-mode-hook
+	  (lambda ()
+	    (setq ac-sources '(ac-source-yasnippet))))
 
 
 

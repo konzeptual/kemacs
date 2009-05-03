@@ -19,5 +19,14 @@
 ;; Opens files, edit and saves them from grep-buffer.
 (require 'grep-ed)
 
+
+(require 'rdebug)
+
+;; (add-to-list 'load-path (concat dotfiles-dir "vendor/"))
+(add-to-list 'load-path (concat dotfiles-dir "vendor/git-emacs"))
+(require 'git-emacs)
+
+
+
 (provide 'kemacs-test)
 ;;; kemacs-test.el ends here

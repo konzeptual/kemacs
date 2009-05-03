@@ -7,13 +7,13 @@
 (add-to-list 'load-path (concat dotfiles-dir "vendor/rinari"))
 (add-to-list 'load-path (concat dotfiles-dir "vendor/rinari/util"))
 (require 'rinari)
+(require 'ri)
 
 (eval-after-load 'ruby-mode
   '(progn
      (require 'ruby-compilation)
      (setq ruby-use-encoding-map nil)
      (add-hook 'ruby-mode-hook 'inf-ruby-keys)
-     ;; (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
      (define-key ruby-mode-map (kbd "C-x hr") 'ri)
      ))
@@ -27,17 +27,6 @@
 
 ;; We never want to edit Rubinius bytecode
 (add-to-list 'completion-ignored-extensions ".rbc")
-
-;; TODO ?Needed?
-;; Clear the compilation buffer between test runs.
-;; (eval-after-load 'ruby-compilation
-;;   '(progn
-;;      (defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
-;;        (let ((comp-buffer-name (format "*%s*" name)))
-;;          (when (get-buffer comp-buffer-name)
-;;            (with-current-buffer comp-buffer-name
-;;              (delete-region (point-min) (point-max))))))
-;;      (ad-activate 'ruby-do-run-w/compilation)))
 
 (add-hook 'ruby-mode-hook 'coding-hook)
 
@@ -73,14 +62,21 @@
                    (flymake-mode t))))))
 
 
-;; Needed?
-
-
 (require 'inf-ruby)
 (require 'ruby-compilation)
 
+;;;rhtml-mode
+(add-to-list 'load-path "/home/kons/.emacs.d/vendor/rhtml/")
+(require 'rhtml-mode)
+(add-hook 'rhtml-mode-hook
+     	  (lambda () (rinari-launch)))
+
 ;; (add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
 ;; (require 'yasnippets-rails)
+
+
+(add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
+(require 'yasnippets-rails)
 
 
 (provide 'kemacs-ruby)

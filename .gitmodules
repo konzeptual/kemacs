@@ -1,0 +1,3 @@
+[submodule "vendor/yasnippets-rails"]
+	path = vendor/yasnippets-rails
+	url = git@github.com:krick/yasnippets-rails.git

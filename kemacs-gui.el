@@ -8,8 +8,9 @@
 ;; nice looking theme. Good for my eyes
 (require 'color-theme)
 (setq color-theme-is-global t)
-;;(color-theme-xemacs)
 (color-theme-charcoal-black)
+;; (load-file "/home/kons/.emacs.d/vendor/blackboard.el")
+
 
 ;; will allow you to type just "y" instead of "yes" when you exit.
 (fset 'yes-or-no-p 'y-or-n-p)
