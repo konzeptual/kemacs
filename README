@@ -1,0 +1,5 @@
+Personal configuration of the emacs.
+README  - this file
+init.el - main configuration file. Everything is loaded from here.
+kemacs-xxx.el - packages that are loaded in init.el with different aspects of configuration.
+vendor  - directory with third-party packages.
