@@ -91,36 +91,5 @@ If strip-extension is not nil - remove file extension.
   (if window-system (hl-line-mode t))
   )
 
-;; http://www.hack.org/mc/files/.emacs.el	
-(defun tea-timer (sec)
-  "Ding and show notification when tea is ready.
-Store current timer in a global variable."
-  (interactive)
-  (run-at-time sec nil (lambda (seconds)
-			 (start-process "tea-time-play-notification" nil "aplay" "/usr/share/sounds/purple/login.wav")
-			 (show-notification (format "Time is up! %d minutes" (/ seconds 60)))
-			 ) sec))
-
-(defun show-notification (notification)
-  "Show notification. Use mumbles."
-  (if (not (start-process "tea-time-mumble-notification" nil "mumbles-send" notification))
-      (message notification)
-    ))
-
-(defun tea-time (timeval)
-  "Ask how long the tea should draw and start a timer.
-Cancel prevoius timer, started by this function"
-  (interactive "sHow long (min)? ")
-  (if (not (string-match "\\`\\([0-9]*\\)\\'" timeval))
-      (error "Strange time."))
-
-  (let* ((minutes (string-to-int (substring timeval (match-beginning 1)
-					    (match-end 1))))
-	 (seconds (* minutes 60)))
-    (progn
-      (if (boundp 'tea-active-timer) (cancel-timer tea-active-timer))
-      (setq tea-active-timer (tea-timer seconds))
-      )))
-
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
