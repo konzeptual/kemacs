@@ -132,8 +132,9 @@ Output: formatted list for generating gtd-agenda, like this:
 
 ;; Now we can start timer easily
 
-(add-hook 'org-agenda-mode-hook
-	  (lambda () (define-key org-agenda-mode-map "\C-ct" 'tea-time)))
+;; (add-hook 'org-agenda-mode-hook
+;; 	  (lambda () (define-key org-agenda-mode-map "\C-ct" 'tea-time)))
+(define-key global-map "\C-ct" 'tea-time)
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
