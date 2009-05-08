@@ -63,9 +63,8 @@
 ;; Manage TODO states
 (setq org-todo-keywords
       '(
-        (sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
+        (sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
         (sequence "FEATURE(f)" "DESIGNED(d)" "|" "IMPLEMENTED(i)")
-        (sequence "IDEA(i)" "DRAFT(d)" "MOSTLY(m)" "WRITTEN(w)" "|" "PUBLISHED(p)")
         ))
 
 
@@ -86,7 +85,7 @@
 (setq org-gtd-tags '(
                      (kProject {^k.*} vhost osru)
                      (up)
-                     (tech symfony emacs orgmode stumpwm)
+                     (tech symfony emacs orgmode stumpwm rails)
                      (everyday)
                      (relations)
                      (out)
@@ -125,14 +124,20 @@ Output: formatted list for generating gtd-agenda, like this:
 (setq org-agenda-custom-commands ())
 (setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT"))
 
-(setq org-gtd-setup (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO")))
+(setq org-gtd-setup (cons '(todo "ACTIVE") (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO"))))
 
 
 ;; Setup GTD views in agenda. constructed from variable org-gtd-tags
 (add-to-list 'org-agenda-custom-commands (append '("G") '("GTD Review") (cons org-gtd-review-setup ())))
 (add-to-list 'org-agenda-custom-commands (append '("g") '("GTD Block Agenda") (cons org-gtd-setup ())))
 
+;; Now we can start timer easily
+
+(add-hook 'org-agenda-mode-hook
+	  (lambda () (define-key org-agenda-mode-map "\C-ct" 'tea-time)))
+
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
+
 
 
