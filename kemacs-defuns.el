@@ -91,5 +91,24 @@ If strip-extension is not nil - remove file extension.
   (if window-system (hl-line-mode t))
   )
 
+;; http://www.hack.org/mc/files/.emacs.el	
+(defun tea-time (timeval)
+  "Ask how long the tea should draw and start a timer."
+  (interactive "sHow long (min:sec)? ")
+  (if (not (string-match "\\`\\([0-9]*\\)\\'" timeval))
+      (error "Strange time."))
+
+  (let* ((minutes (string-to-int (substring timeval (match-beginning 1)
+					    (match-end 1))))
+	 (seconds (* minutes 60)))
+    (tea-timer seconds)))
+
+(defun tea-timer (sec)
+  "Ding when tea is ready."
+  (interactive)
+  (run-at-time sec nil '(lambda ()
+                          (play-sound-file "/usr/share/sounds/purple/login.wav")
+                          (message "Your tea is ready!"))))
+
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
