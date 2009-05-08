@@ -1,0 +1,6 @@
+[submodule "vendor/yasnippets-rspec"]
+	path = vendor/yasnippets-rspec
+	url = git@github.com:krick/yasnippets-rspec.git
+[submodule "vendor/rspec-mode.el"]
+	path = vendor/rspec-mode.el
+	url = git://github.com/pat-maddox/rspec-mode.el.git
