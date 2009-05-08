@@ -77,7 +77,7 @@ If strip-extension is not nil - remove file extension.
                  ((not prefix) "%d/%m/%Y")
                  ((equal prefix '(4)) "%Y-%m-%d")
                  ((equal prefix '(16)) "%d %B %Y, %A")))
-;;        (system-time-locale "ru_RU")
+	;;        (system-time-locale "ru_RU")
 	)
     (insert (format-time-string format))))
 
@@ -93,13 +93,19 @@ If strip-extension is not nil - remove file extension.
 
 ;; http://www.hack.org/mc/files/.emacs.el	
 (defun tea-timer (sec)
-  "Ding when tea is ready.
+  "Ding and show notification when tea is ready.
 Store current timer in a global variable."
   (interactive)
   (run-at-time sec nil (lambda (seconds)
-			 (play-sound-file "/usr/share/sounds/purple/login.wav")
-			 (message "Time is up! %d minutes" (/ seconds 60))) sec))
+			 (start-process "tea-time-play-notification" nil "aplay" "/usr/share/sounds/purple/login.wav")
+			 (show-notification (format "Time is up! %d minutes" (/ seconds 60)))
+			 ) sec))
 
+(defun show-notification (notification)
+  "Show notification. Use mumbles."
+  (if (not (start-process "tea-time-mumble-notification" nil "mumbles-send" notification))
+      (message notification)
+    ))
 
 (defun tea-time (timeval)
   "Ask how long the tea should draw and start a timer.
