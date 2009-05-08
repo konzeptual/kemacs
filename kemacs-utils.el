@@ -52,5 +52,8 @@
 (require 'yaoddmuse)
 (setq yaoddmuse-username "KonstantinAntipin")
 
+;; Mode for seting time intervals. Invaluable for my productivity.
+(require 'tea-time)
+
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
