@@ -43,8 +43,7 @@
         ))
 
 ;; Use all files at the org-directory + more for agenda view
-(setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))
-                               '("~/sketches/drafts/viborHost/viborHostinga.org")))
+(setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))))
 
 ;; Use ido whe possible
 (setq org-completion-use-ido t)
@@ -122,7 +121,7 @@ Output: formatted list for generating gtd-agenda, like this:
     ))
 
 (setq org-agenda-custom-commands ())
-(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT"))
+(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT-ACTIVE"))
 
 (setq org-gtd-setup (cons '(todo "ACTIVE") (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO"))))
 
