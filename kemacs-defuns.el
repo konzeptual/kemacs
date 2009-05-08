@@ -91,36 +91,59 @@ If strip-extension is not nil - remove file extension.
   (if window-system (hl-line-mode t))
   )
 
-;; http://www.hack.org/mc/files/.emacs.el	
-(defun tea-timer (sec)
-  "Ding and show notification when tea is ready.
-Store current timer in a global variable."
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; It is tea time!
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Origin comes from http://www.hack.org/mc/files/.emacs.el
+(defun tea-show-remaining-time ()
+  "Show how much time is left. If timer is not started - say it."
+  (if (not (tea-timer-is-active))
+      (message "Timer is not yet started.")
+    (let* (
+	   (remaining-time (decode-time (time-subtract (timer--time tea-active-timer) (current-time))))
+	   (remaining-seconds (nth 0 remaining-time))
+	   (remaining-minutes (nth 1 remaining-time))
+	   )
+      (message "%d min %d sec left" remaining-minutes remaining-seconds)
+      )
+    ))
+
+(defun tea-timer-cancel ()
   (interactive)
-  (run-at-time sec nil (lambda (seconds)
-			 (start-process "tea-time-play-notification" nil "aplay" "/usr/share/sounds/purple/login.wav")
-			 (show-notification (format "Time is up! %d minutes" (/ seconds 60)))
-			 ) sec))
+  "Cancel currenly running tea-timer. If not running - do nothing."
+  (if (tea-timer-is-active)
+      (progn
+	(cancel-timer tea-active-timer)
+	(makunbound 'tea-active-timer)
+	)
+    ))
+
+(defun tea-timer-is-active ()
+  "Check if we have a running tea-timer."
+  (and (boundp 'tea-active-timer) (< (float-time) (float-time (timer--time tea-active-timer))))
+  )
+
+(defun tea-time (timeval)
+  "Ask how long the tea should draw and start a timer.
+Cancel prevoius timer, started by this function"
+  (interactive "sHow long (min)? ")
+  (if (not (string-match "\\`\\([0-9]+\\)\\'" timeval))
+      (tea-show-remaining-time)
+    (let* ((minutes (string-to-int (substring timeval (match-beginning 1)
+					      (match-end 1))))
+	   (seconds (* minutes 60)))
+      (progn
+	(tea-timer-cancel)
+	(setq tea-active-timer (tea-timer seconds))
+	)))
+  )
 
 (defun show-notification (notification)
   "Show notification. Use mumbles."
   (if (not (start-process "tea-time-mumble-notification" nil "mumbles-send" notification))
       (message notification)
     ))
-
-(defun tea-time (timeval)
-  "Ask how long the tea should draw and start a timer.
-Cancel prevoius timer, started by this function"
-  (interactive "sHow long (min)? ")
-  (if (not (string-match "\\`\\([0-9]*\\)\\'" timeval))
-      (error "Strange time."))
-
-  (let* ((minutes (string-to-int (substring timeval (match-beginning 1)
-					    (match-end 1))))
-	 (seconds (* minutes 60)))
-    (progn
-      (if (boundp 'tea-active-timer) (cancel-timer tea-active-timer))
-      (setq tea-active-timer (tea-timer seconds))
-      )))
 
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
