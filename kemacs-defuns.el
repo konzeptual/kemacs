@@ -92,23 +92,29 @@ If strip-extension is not nil - remove file extension.
   )
 
 ;; http://www.hack.org/mc/files/.emacs.el	
+(defun tea-timer (sec)
+  "Ding when tea is ready.
+Store current timer in a global variable."
+  (interactive)
+  (run-at-time sec nil (lambda (seconds)
+			 (play-sound-file "/usr/share/sounds/purple/login.wav")
+			 (message "Time is up! %d minutes" (/ seconds 60))) sec))
+
+
 (defun tea-time (timeval)
-  "Ask how long the tea should draw and start a timer."
-  (interactive "sHow long (min:sec)? ")
+  "Ask how long the tea should draw and start a timer.
+Cancel prevoius timer, started by this function"
+  (interactive "sHow long (min)? ")
   (if (not (string-match "\\`\\([0-9]*\\)\\'" timeval))
       (error "Strange time."))
 
   (let* ((minutes (string-to-int (substring timeval (match-beginning 1)
 					    (match-end 1))))
 	 (seconds (* minutes 60)))
-    (tea-timer seconds)))
-
-(defun tea-timer (sec)
-  "Ding when tea is ready."
-  (interactive)
-  (run-at-time sec nil '(lambda ()
-                          (play-sound-file "/usr/share/sounds/purple/login.wav")
-                          (message "Your tea is ready!"))))
+    (progn
+      (cancel-timer tea-active-timer)
+      (setq tea-active-timer (tea-timer seconds))
+      )))
 
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
