@@ -112,7 +112,7 @@ Cancel prevoius timer, started by this function"
 					    (match-end 1))))
 	 (seconds (* minutes 60)))
     (progn
-      (cancel-timer tea-active-timer)
+      (if (boundp 'tea-active-timer) (cancel-timer tea-active-timer))
       (setq tea-active-timer (tea-timer seconds))
       )))
 
