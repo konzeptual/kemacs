@@ -63,7 +63,6 @@
 (setq org-todo-keywords
       '(
         (sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
-        (sequence "FEATURE(f)" "DESIGNED(d)" "|" "IMPLEMENTED(i)")
         ))
 
 
