@@ -34,8 +34,8 @@
 ;; setup templates for remember mode
 (setq org-remember-templates
       '(
-        ("Journal" ?j "* NEXT %U %?\n\n  %i\n"     "journal.org")
-        ("Todo"    ?t "* TODO %?   %^g\n  %i\n "   "todo.org"     "Todo list")
+        ("Journal" ?j "* NEXT %U %?\n\n  %i"     "journal.org")
+        ("Todo"    ?t "* TODO %?   %^g\n  %i"   "todo.org"     "Todo list")
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
