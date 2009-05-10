@@ -12,11 +12,25 @@
 ;; will delete "hungrily" in C mode! Use it to see what it does -- very useful.
 (setq c-hungry-delete-key t)
 ;; will let emacs put in a "carriage-return" for you automatically after
-;;left curly braces, right curly braces, and semi-colons in "C mode" -- very useful.
-(setq c-auto-newline 0)
+;;left curly braces, right curly braces, and semi-colons in "C mode" 
+;; (setq c-auto-newline 0)
 
 ;;compilation window shall scroll down
 (setq compilation-scroll-output 1)
+
+;; Original idea from
+;; http://www.opensubscriber.com/message/emacs-devel@gnu.org/10971693.html
+(defun comment-dwim-line (&optional arg)
+  "Replacement for the comment-dwim command.
+If no region is selected and current line is not blank, then comment current line.
+Replaces default behaviour of comment-dwim, when it inserts comment at the end of the line"
+  (interactive "*P")
+  (comment-normalize-vars)
+  (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
+      (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+    (comment-dwim arg)))
+
+(global-set-key "\M-;" 'comment-dwim-line)
 
 ;; insert doxygen-style comments before function
 (fset 'insert-function-comment
@@ -66,7 +80,6 @@
 ;; Trick to have my own changes to the snippets.
 ;; Everything in my-snippet directory overwrites the default one.
 (setq yas/root-directory (concat yas-dir "/my-snippets"))
-;; (message yas-dir)
 (yas/load-directory yas/root-directory)
 
 
@@ -91,6 +104,7 @@
 (define-key ac-complete-mode-map "\M-p" 'ac-previous)
 ;; start completion when entered 3 characters
 (setq ac-auto-start 3)
+
 (require 'auto-complete-yasnippet)
 (set-default 'ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-words-in-buffer))
 
@@ -110,9 +124,10 @@
 	  (lambda ()
 	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-files-in-current-dir ac-source-words-in-buffer))))
 
-(add-hook 'ruby-mode-hook
-	  (lambda ()
-	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools)))))
+;; (require 'auto-complete-ruby)
+;; (add-hook 'ruby-mode-hook
+;; 	  (lambda ()
+;; 	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools)))))
 
 (add-hook 'fundamental-mode-hook
 	  (lambda ()
