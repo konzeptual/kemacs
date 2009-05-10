@@ -54,6 +54,8 @@
 
 ;; Mode for seting time intervals. Invaluable for my productivity.
 (require 'tea-time)
+(setq tea-time-sound "/usr/share/sounds/purple/login.wav")
+(define-key global-map "\C-ct" 'tea-time)
 
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
