@@ -58,14 +58,29 @@
 ;; http://www.emacswiki.org/emacs-en/AutoIndentation
 (defun kill-and-join-forward (&optional arg)
   "Replacement for the kill-line.
-If we are at the end of the line - join with
-previous and fix unneeded spaces."
+If we are at the end of the line - join with next and delete indentation."
     (interactive "P")
     (if (and (eolp) (not (bolp)))
 	(delete-indentation t)
       (kill-line arg)))
 
 (global-set-key "\C-k" 'kill-and-join-forward)
+
+;; http://www.emacswiki.org/emacs-en/SlickCopy
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (message "Copied line")
+     (list (line-beginning-position)
+	   (line-beginning-position 2)))))
+
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+	   (line-beginning-position 2)))))
 
 (provide 'kemacs-navigation)
 ;;; kemacs-navigation.el ends here
