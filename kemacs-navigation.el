@@ -54,14 +54,18 @@
 (require 'recentf)
 (recentf-mode 1)
 
-;; (defun recentf-ido-find-file ()
-;;   "Find a recent file using ido."
-;;   (interactive)
-;;   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
-;;     (when file
-;;       (find-file file))))
+;; Modification from
+;; http://www.emacswiki.org/emacs-en/AutoIndentation
+(defun kill-and-join-forward (&optional arg)
+  "Replacement for the kill-line.
+If we are at the end of the line - join with
+previous and fix unneeded spaces."
+    (interactive "P")
+    (if (and (eolp) (not (bolp)))
+	(delete-indentation t)
+      (kill-line arg)))
 
-
+(global-set-key "\C-k" 'kill-and-join-forward)
 
 (provide 'kemacs-navigation)
 ;;; kemacs-navigation.el ends here
