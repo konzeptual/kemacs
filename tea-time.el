@@ -38,6 +38,8 @@
 ;; Add below code in your .emacs
 ;;
 ;; (require 'tea-time)
+;; (setq tea-time-sound "path-to-sound-file")
+
 
 ;;; Usage:
 ;;
@@ -52,23 +54,36 @@
 ;; That's all.
 
 ;;; TODO
-;; - put custom sound in variable
 ;; - What if I want to enter seconds/hours as well?
 
 ;;; Code:
 
 ;; Origin comes from http://www.hack.org/mc/files/.emacs.el
 
+(defcustom tea-time-sound nil
+  "sound that will play once timer is expired.
+If you don't have alsa, it is better to be .wav file"
+  :group 'tea-time
+  :type 'string
+  )
+
 (defun tea-timer (sec)
   "Ding and show notification when tea is ready.
 Store current timer in a global variable."
   (interactive)
   (run-at-time sec nil (lambda (seconds)
-			 (if (program-exists "aplay")
-			     (start-process "tea-time-play-notification" nil "aplay" "/usr/share/sounds/purple/login.wav")
-			   (play-sound-file "/usr/share/sounds/purple/login.wav"))
+			 (tea-time-play-sound)
 			 (show-notification (format "Time is up! %d minutes" (/ seconds 60)))
 			 ) sec))
+
+(defun tea-time-play-sound ()
+  "Play sound"  
+  (if (not (eq nil tea-time-sound))
+      (if (program-exists "aplay")
+	  (start-process "tea-time-play-notification" nil "aplay" tea-time-sound)
+	(play-sound-file tea-time-sound))
+    (progn (beep t) (beep t)))
+  )
 
 (defun tea-show-remaining-time ()
   "Show how much time is left. If timer is not started - say it."
@@ -125,7 +140,6 @@ Cancel prevoius timer, started by this function"
   (if (eq system-type 'gnu/linux)
       (= 0 (call-process "which" nil nil nil program-name))
     ))
-
 
 (provide 'tea-time)
 ;;; tea-time.el ends here
