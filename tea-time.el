@@ -52,7 +52,6 @@
 ;; That's all.
 
 ;;; TODO
-;; - correctly hande situation when mumbles is not available
 ;; - put custom sound in variable
 ;; - What if I want to enter seconds/hours as well?
 
@@ -65,7 +64,9 @@
 Store current timer in a global variable."
   (interactive)
   (run-at-time sec nil (lambda (seconds)
-			 (start-process "tea-time-play-notification" nil "aplay" "/usr/share/sounds/purple/login.wav")
+			 (if (program-exists "aplay")
+			     (start-process "tea-time-play-notification" nil "aplay" "/usr/share/sounds/purple/login.wav")
+			   (play-sound-file "/usr/share/sounds/purple/login.wav"))
 			 (show-notification (format "Time is up! %d minutes" (/ seconds 60)))
 			 ) sec))
 
@@ -114,8 +115,15 @@ Cancel prevoius timer, started by this function"
 
 (defun show-notification (notification)
   "Show notification. Use mumbles."
-  (if (not (start-process "tea-time-mumble-notification" nil "mumbles-send" notification))
-      (message notification)
+  (if (program-exists "mumbles-send")
+      (start-process "tea-time-mumble-notification" nil "mumbles-send" notification)
+    (message notification)
+    ))
+
+(defun program-exists (program-name)
+  "Checks whenever we can locate program and launch it."
+  (if (eq system-type 'gnu/linux)
+      (= 0 (call-process "which" nil nil nil program-name))
     ))
 
 
