@@ -50,6 +50,9 @@
 ;; 
 ;; Use (tea-timer-cancel) to cancel currently running timer.
 ;;
+;; Suggested binding:
+;; (define-key global-map "\C-ct" 'tea-time)
+
 
 ;; That's all.
 
