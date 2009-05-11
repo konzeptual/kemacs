@@ -43,8 +43,8 @@
 ;; Switch on longlines-mode.
 (add-hook 'markdown-mode-hook 'longlines-mode)
 
-(setq auto-mode-alist
-      (cons '("\\.txt" . markdown-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '(".txt$" . markdown-mode))
+(add-to-list 'auto-mode-alist '(".markdown$" . markdown-mode))
 
 ;; The following is for proper handling russian text in preview in markdown mode
 (defadvice markdown
