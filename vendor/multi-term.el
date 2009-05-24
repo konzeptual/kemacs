@@ -4,8 +4,8 @@
 ;; Maintainer: Andy Stewart <lazycat.manatee@gmail.com>
 ;; Copyright (C) 2008, 2009, Andy Stewart, all rights reserved.
 ;; Created: 2008-09-19 23:02:42
-;; Version: 0.8.3
-;; Last-Updated: 2009-02-18 21:23:32
+;; Version: 0.8.6
+;; Last-Updated: 2009-04-21 15:32:47
 ;; URL: http://www.emacswiki.org/emacs/download/multi-term.el
 ;; Keywords: term, terminal, multiple buffer
 ;; Compatibility: GNU Emacs 23.0.60.1
@@ -103,6 +103,10 @@
 ;; `multi-term-scroll-to-bottom-on-output' controls whether interpreter
 ;; output causes window to scroll.
 ;;
+;; `multi-term-switch-after-close' try to switch other `multi-term' buffer
+;; after close current one.
+;; If you don't like this feature just set it with nil.
+;;
 ;; `term-unbind-key-list' is a key list to unbind some keystroke.
 ;;
 ;; `term-bind-key-alist' is a key alist that binds some keystroke.
@@ -121,6 +125,17 @@
 ;;
 
 ;;; Change log:
+;;
+;; 2009/04/21
+;;      * Fix a bug that bring at `2009/03/28':
+;;        It will kill sub-process in other multi-term buffer
+;;        when we kill current multi-term buffer.
+;;
+;; 2009/03/29
+;;      * Add new command `term-send-reverse-search-history'.
+;;
+;; 2009/03/28
+;;      * Add new option `multi-term-switch-after-close'.
 ;;
 ;; 2009/02/18
 ;;      * Fix bug between ECB and `multi-term-dedicated-close'.
@@ -260,6 +275,14 @@ See variable `multi-term-scroll-show-maximum-output'."
   :type 'boolean
   :group 'multi-term)
 
+(defcustom multi-term-switch-after-close 'NEXT
+  "Try to switch other `multi-term' buffer after close current one.
+If this option is 'NEXT, switch to next `multi-term' buffer;
+If this option is 'PREVIOUS, switch to previous `multi-term' buffer.
+If this option is nil, don't switch other `multi-term' buffer."
+  :type 'symbol
+  :group 'multi-term)
+
 (defcustom term-unbind-key-list
   '("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>")
   "The key list that will need to be unbind."
@@ -281,6 +304,7 @@ See variable `multi-term-scroll-show-maximum-output'."
     ("M-n" . term-send-down)
     ("M-M" . term-send-forward-kill-word)
     ("M-N" . term-send-backward-kill-word)
+    ("M-r" . term-send-reverse-search-history)
     ("M-," . term-send-input)
     ("M-." . comint-dynamic-complete))
   "The key alist that will need to be bind.
@@ -439,6 +463,11 @@ Will prompt you shell name when you type `C-u' before this command."
   (interactive)
   (term-send-raw-string "\ef"))
 
+(defun term-send-reverse-search-history ()
+  "Search history reverse."
+  (interactive)
+  (term-send-raw-string "\C-r"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Utilise Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun multi-term-internal ()
   "Internal handle for `multi-term' buffer."
@@ -496,14 +525,19 @@ If option DEDICATED-WINDOW is `non-nil' will create dedicated `multi-term' windo
 
 (defun multi-term-kill-buffer-hook ()
   "Function that hook `kill-buffer-hook'."
-  ;; Remember dedicated window height.
-  (multi-term-dedicated-remember-window-height)
-  ;; Quit the current subjob
-  ;; when have alive process with current term buffer
-  (when (and (eq major-mode 'term-mode)
-             (term-check-proc (current-buffer)))
-    ;; Quit sub-process.
-    (term-quit-subjob)))
+  (when (eq major-mode 'term-mode)
+    ;; Quit the current subjob
+    ;; when have alive process with current term buffer.
+    ;; Must do this job BEFORE `multi-term-switch-after-close' action.
+    (when (term-check-proc (current-buffer))
+      ;; Quit sub-process.
+      (term-quit-subjob))
+    ;; Remember dedicated window height.
+    (multi-term-dedicated-remember-window-height)
+    ;; Try to switch other multi-term buffer
+    ;; when option `multi-term-switch-after-close' is non-nil.
+    (when multi-term-switch-after-close
+      (multi-term-switch-internal multi-term-switch-after-close 1))))
 
 (defun multi-term-list ()
   "List term buffers presently active."
@@ -522,7 +556,20 @@ If option DEDICATED-WINDOW is `non-nil' will create dedicated `multi-term' windo
          (cadr (split-string (buffer-name b)  "[<>]")))))))
 
 (defun multi-term-switch (direction offset)
-  "If DIRECTION is `NEXT', switch to the next term.
+  "Switch `multi-term' buffers.
+If DIRECTION is `NEXT', switch to the next term.
+If DIRECTION `PREVIOUS', switch to the previous term.
+Option OFFSET for skip OFFSET number term buffer."
+  (unless (multi-term-switch-internal direction offset)
+    (if multi-term-try-create
+        (progn
+          (multi-term)
+          (message "Create a new `multi-term' buffer."))
+      (message "Haven't any `multi-term' buffer exist."))))
+
+(defun multi-term-switch-internal (direction offset)
+  "Internal `multi-term' buffers switch function.
+If DIRECTION is `NEXT', switch to the next term.
 If DIRECTION `PREVIOUS', switch to the previous term.
 Option OFFSET for skip OFFSET number term buffer."
   (let (terms this-buffer)
@@ -536,12 +583,9 @@ Option OFFSET for skip OFFSET number term buffer."
                   (switch-to-buffer (nth (+ this-buffer offset) terms))
                 (switch-to-buffer (nth (+ (- (length (multi-term-list)) offset)
                                           this-buffer) terms)))
-            (switch-to-buffer (car terms))))
-      (if multi-term-try-create
-          (progn
-            (multi-term)
-            (message "Create a new `multi-term' buffer."))
-        (message "Haven't any `multi-term' buffer exist.")))))
+            (switch-to-buffer (car terms)))
+          t)
+      nil)))
 
 (defun multi-term-keystroke-setup ()
   "Keystroke setup of `term-char-mode'.

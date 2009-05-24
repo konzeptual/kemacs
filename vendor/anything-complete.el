@@ -1,5 +1,5 @@
 ;;; anything-complete.el --- completion with anything
-;; $Id: anything-complete.el,v 1.43 2009/02/27 14:45:26 rubikitch Exp $
+;; $Id: anything-complete.el,v 1.48 2009/05/03 19:07:22 rubikitch Exp $
 
 ;; Copyright (C) 2008  rubikitch
 
@@ -25,6 +25,26 @@
 ;;; Commentary:
 
 ;; Completion with Anything interface.
+
+;;; Commands:
+;;
+;; Below are complete command list:
+;;
+;;  `anything-lisp-complete-symbol'
+;;    `lisp-complete-symbol' replacement using `anything'.
+;;  `anything-lisp-complete-symbol-partial-match'
+;;    `lisp-complete-symbol' replacement using `anything' (partial match).
+;;  `anything-apropos'
+;;    `apropos' replacement using `anything'.
+;;  `anything-read-string-mode'
+;;    If this minor mode is on, use `anything' version of `completing-read' and `read-file-name'.
+;;  `anything-complete-shell-history'
+;;    Select a command from shell history and insert it.
+;;
+;;; Customizable Options:
+;;
+;; Below are customizable option list:
+;;
 
 ;; * `anything-lisp-complete-symbol', `anything-lisp-complete-symbol-partial-match':
 ;;     `lisp-complete-symbol' with `anything'
@@ -70,6 +90,23 @@
 ;;; History:
 
 ;; $Log: anything-complete.el,v $
+;; Revision 1.48  2009/05/03 19:07:22  rubikitch
+;; anything-complete: `enable-recursive-minibuffers' = t
+;;
+;; Revision 1.47  2009/05/03 18:42:23  rubikitch
+;; Remove *-partial-match sources.
+;; They are aliased for compatibility.
+;;
+;; Revision 1.46  2009/05/03 18:33:35  rubikitch
+;; Remove dependency of `ac-candidates-in-buffer'
+;;
+;; Revision 1.45  2009/04/20 16:24:33  rubikitch
+;; Set anything-samewindow to nil for in-buffer completion.
+;;
+;; Revision 1.44  2009/04/18 10:07:35  rubikitch
+;; * auto-document.
+;; * Use anything-show-completion.el if available.
+;;
 ;; Revision 1.43  2009/02/27 14:45:26  rubikitch
 ;; Fix a read-only bug in `alcs-make-candidates'.
 ;;
@@ -253,19 +290,20 @@
 
 ;;; Code:
 
-(defvar anything-complete-version "$Id: anything-complete.el,v 1.43 2009/02/27 14:45:26 rubikitch Exp $")
+(defvar anything-complete-version "$Id: anything-complete.el,v 1.48 2009/05/03 19:07:22 rubikitch Exp $")
 (require 'anything-match-plugin)
 (require 'thingatpt)
 
+;; (@* "overlay")
+(when (require 'anything-show-completion nil t)
+  (dolist (f '(anything-complete
+               anything-lisp-complete-symbol
+               anything-lisp-complete-symbol-partial-match))
+    (use-anything-show-completion f '(length anything-complete-target))))
+
+
 ;; (@* "core")
 (defvar anything-complete-target "")
-(defun ac-candidates-in-buffer ()
-  (let ((anything-pattern
-         (if (equal "" anything-complete-target)
-             anything-pattern
-           (concat (if (anything-attr-defined 'prefix-match) "^" "")
-                   anything-complete-target " " anything-pattern))))
-    (anything-candidates-in-buffer)))
 
 (defun ac-insert (candidate)
   (let ((pt (point)))
@@ -276,7 +314,7 @@
 
 (add-to-list 'anything-type-attributes
              '(complete
-               (candidates-in-buffer . ac-candidates-in-buffer)
+               (candidates-in-buffer)
                (action . ac-insert)))
 
 ;; Warning: I'll change this function's interface. DON'T USE IN YOUR PROGRAM!
@@ -289,7 +327,9 @@
   (let ((anything-candidate-number-limit (or limit anything-candidate-number-limit))
         (anything-idle-delay (or idle-delay anything-idle-delay))
         (anything-input-idle-delay (or input-idle-delay anything-input-idle-delay))
-        (anything-complete-target target))
+        (anything-complete-target target)
+        (enable-recursive-minibuffers t)
+        anything-samewindow)
     (anything-noresume sources nil nil nil nil "*anything complete*")))
 
 
@@ -357,45 +397,24 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
 (defvar anything-c-source-complete-emacs-functions
   '((name . "Functions")
     (init . (lambda () (alcs-init alcs-functions-buffer)))
-    (prefix-match)
-    (candidates-in-buffer . ac-candidates-in-buffer)
+    (candidates-in-buffer)
     (type . complete-function)))
 (defvar anything-c-source-complete-emacs-commands
   '((name . "Commands")
     (init . (lambda () (alcs-init alcs-commands-buffer)))
-    (prefix-match)
-    (candidates-in-buffer . ac-candidates-in-buffer)
+    (candidates-in-buffer)
     (type . complete-function)))
 (defvar anything-c-source-complete-emacs-variables
   '((name . "Variables")
     (init . (lambda () (alcs-init alcs-variables-buffer)))
-    (prefix-match)
-    (candidates-in-buffer . ac-candidates-in-buffer)
+    (candidates-in-buffer)
     (type . complete-variable)))
 (defvar anything-c-source-complete-emacs-other-symbols
   '((name . "Other Symbols")
     (init . (lambda () (alcs-init alcs-symbol-buffer)))
-    (prefix-match)
-    (candidates-in-buffer . ac-candidates-in-buffer)
+    (candidates-in-buffer)
     (filtered-candidate-transformer . alcs-sort)
     (action . ac-insert)))
-
-(defvar anything-c-source-complete-emacs-functions-partial-match
-  '((name . "Functions")
-    (init . (lambda () (alcs-init alcs-functions-buffer)))
-    (candidates-in-buffer)
-    (type . complete-function)))
-(defvar anything-c-source-complete-emacs-commands-partial-match
-  '((name . "Commands")
-    (init . (lambda () (alcs-init alcs-commands-buffer)))
-    (candidates-in-buffer)
-    (type . complete-function)))
-(defvar anything-c-source-complete-emacs-variables-partial-match
-  '((name . "Variables")
-    (init . (lambda () (alcs-init alcs-variables-buffer)))
-    (candidates-in-buffer)
-    (type . complete-variable)))
-
 (defvar anything-c-source-apropos-emacs-functions
   '((name . "Apropos Functions")
     (init . (lambda () (alcs-init alcs-functions-buffer)))
@@ -436,11 +455,6 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
     anything-c-source-complete-emacs-functions
     anything-c-source-complete-emacs-variables))
 
-(defvar anything-lisp-complete-symbol-partial-match-sources
-  '(anything-c-source-complete-emacs-commands-partial-match
-    anything-c-source-complete-emacs-functions-partial-match
-    anything-c-source-complete-emacs-variables-partial-match))
-
 (defvar anything-apropos-sources
   '(anything-c-source-apropos-emacs-commands
     anything-c-source-apropos-emacs-functions
@@ -474,7 +488,8 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
 (defun anything-lisp-complete-symbol-1 (update sources input)
   (when (or update (null (get-buffer alcs-variables-buffer)))
     (alcs-make-candidates))
-  (let ((anything-input-idle-delay
+  (let (anything-samewindow
+        (anything-input-idle-delay
          (or anything-lisp-complete-symbol-input-idle-delay
              anything-input-idle-delay)))
     (anything-noresume sources input nil nil nil "*anything complete*")))
@@ -482,11 +497,14 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
 (defun anything-lisp-complete-symbol (update)
   "`lisp-complete-symbol' replacement using `anything'."
   (interactive "P")
-  (anything-lisp-complete-symbol-1 update anything-lisp-complete-symbol-sources nil))
+  (anything-lisp-complete-symbol-1 update anything-lisp-complete-symbol-sources
+                                   (anything-aif (symbol-at-point)
+                                       (format "^%s" it)
+                                     "")))
 (defun anything-lisp-complete-symbol-partial-match (update)
   "`lisp-complete-symbol' replacement using `anything' (partial match)."
   (interactive "P")
-  (anything-lisp-complete-symbol-1 update anything-lisp-complete-symbol-partial-match-sources
+  (anything-lisp-complete-symbol-1 update anything-lisp-complete-symbol-sources
                                    (anything-aif (symbol-at-point)
                                        (symbol-name it)
                                      "")))
@@ -694,7 +712,7 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
 ;; (read-variable "variable: " 'find-file-hooks)
 ;; (read-variable "variable: " )
 (defun anything-read-symbol-1 (prompt buffer default-value)
-  (let (anything-input-idle-delay)
+  (let (anything-input-idle-delay anything-samewindow)
     (intern (or (anything-noresume `(,(ac-default-source
                                        (if default-value (format "%s" default-value)))
                                      ((name . ,prompt)
@@ -932,6 +950,16 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
             (line-number-at-pos))))
 
       )))
+
+;;; for compatibility
+(defvaralias 'anything-c-source-complete-emacs-variables-partial-match
+  'anything-c-source-complete-emacs-variables)
+(defvaralias 'anything-c-source-complete-emacs-commands-partial-match
+  'anything-c-source-complete-emacs-commands)
+(defvaralias 'anything-c-source-complete-emacs-functions-partial-match
+  'anything-c-source-complete-emacs-functions)
+
+
 
 (provide 'anything-complete)
 

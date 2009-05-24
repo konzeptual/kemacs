@@ -1,5 +1,0 @@
-#contributor : Konstantin Antipin <antipin.konstantin@googlemail.com>
-#name : button_to
-# --
-<%= button_to '$1', :action => '$0' %>
-

@@ -101,7 +101,7 @@
 ;;     `anything-c-source-bookmarks'       (Bookmarks)
 ;;     `anything-c-source-bookmark-set'    (Set Bookmark)
 ;;     `anything-c-source-bookmarks-ssh'   (Bookmarks-ssh)
-;;     `anything-c-source-bookmarks-su'    (Bookmarks-su)
+;;     `anything-c-source-bookmarks-su'    (Bookmarks-root)
 ;;     `anything-c-source-bookmarks-local' (Bookmarks-Local)
 ;;     `anything-c-source-w3m-bookmarks'   (W3m Bookmarks)
 ;;  Library:
@@ -124,13 +124,16 @@
 ;;  Register:
 ;;     `anything-c-source-register' (Registers)
 ;;  Headline Extraction:
-;;     `anything-c-source-fixme'                   (TODO/FIXME/DRY comments)
-;;     `anything-c-source-rd-headline'             (RD HeadLine)
-;;     `anything-c-source-oddmuse-headline'        (Oddmuse HeadLine)
-;;     `anything-c-source-emacs-source-defun'      (Emacs Source DEFUN)
-;;     `anything-c-source-emacs-lisp-expectations' (Emacs Lisp Expectations)
-;;     `anything-c-source-emacs-lisp-toplevels'    (Emacs Lisp Toplevel / Level 4 Comment / Linkd Star)
-;;     `anything-c-source-org-headline'            (Org HeadLine)
+;;     `anything-c-source-fixme'                            (TODO/FIXME/DRY comments)
+;;     `anything-c-source-rd-headline'                      (RD HeadLine)
+;;     `anything-c-source-oddmuse-headline'                 (Oddmuse HeadLine)
+;;     `anything-c-source-emacs-source-defun'               (Emacs Source DEFUN)
+;;     `anything-c-source-emacs-lisp-expectations'          (Emacs Lisp Expectations)
+;;     `anything-c-source-emacs-lisp-toplevels'             (Emacs Lisp Toplevel / Level 4 Comment / Linkd Star)
+;;     `anything-c-source-org-headline'                     (Org HeadLine)
+;;     `anything-c-source-yaoddmuse-emacswiki-edit-or-view' (Yaoddmuse Edit or View (EmacsWiki))
+;;     `anything-c-source-yaoddmuse-emacswiki-post-library' (Yaoddmuse Post library (EmacsWiki))
+;;     `anything-c-source-eev-anchor'                       (Anchors)
 ;;  Misc:
 ;;     `anything-c-source-picklist'           (Picklist)
 ;;     `anything-c-source-bbdb'               (BBDB)
@@ -138,6 +141,8 @@
 ;;     `anything-c-source-calculation-result' (Calculation Result)
 ;;     `anything-c-source-google-suggest'     (Google Suggest)
 ;;     `anything-c-source-surfraw'            (Surfraw)
+;;     `anything-c-source-emms-streams'       (Emms Streams)
+;;     `anything-c-source-emms-dired'         (Music Directory)
 ;;     `anything-c-source-jabber-contacts'    (Jabber Contacts)
 ;;     `anything-c-source-call-source'        (Call anything source)
 ;;     `anything-c-source-occur'              (Occur)
@@ -162,6 +167,10 @@
 ;;    Show `minibuffer-history'.
 ;;  `anything-gentoo'
 ;;    Start anything with only gentoo sources.
+;;  `anything-surfraw-only'
+;;    Launch only anything-surfraw.
+;;  `anything-kill-buffers'
+;;    You can continuously kill buffer you selected.
 ;;  `anything-insert-buffer-name'
 ;;    Insert buffer name.
 ;;  `anything-insert-symbol'
@@ -192,6 +201,14 @@
 ;;    List all anything sources for test.
 ;;  `anything-select-source'
 ;;    Select source.
+;;  `anything-yaoddmuse-emacswiki-edit-or-view'
+;;    Edit or View EmacsWiki page.
+;;  `anything-yaoddmuse-emacswiki-post-library'
+;;    Post library to EmacsWiki.
+;;  `anything-emms-stream-edit-bookmark'
+;;    Change the information of current emms-stream bookmark from anything.
+;;  `anything-emms-stream-delete-bookmark'
+;;    Delete an emms-stream bookmark from anything.
 ;;  `anything-call-source'
 ;;    Call anything source.
 ;;  `anything-call-source-from-anything'
@@ -420,6 +437,43 @@ You may bind this command to C-r in minibuffer-local-map / minibuffer-local-comp
   (interactive)
   (anything '(anything-c-source-gentoo
               anything-c-source-use-flags)))
+
+(defun anything-surfraw-only ()
+  "Launch only anything-surfraw.
+If region is marked set anything-pattern to region.
+With one prefix arg search symbol at point.
+With two prefix args allow choosing in which symbol to search."
+  (interactive)
+  (let (search pattern)
+    (cond ((region-active-p)
+           (setq pattern (buffer-substring (region-beginning) (region-end))))
+          ((equal current-prefix-arg '(4))
+           (setq pattern (thing-at-point 'symbol)))
+          ((equal current-prefix-arg '(16))
+           (setq search
+                 (intern
+                  (completing-read "Search in: "
+                                   (list "symbol" "sentence" "sexp" "line" "word"))))
+           (setq pattern (thing-at-point search))))
+    (if pattern
+        (progn
+          (setq pattern (replace-regexp-in-string "\n" "" pattern))
+          (anything 'anything-c-source-surfraw pattern))
+        (anything 'anything-c-source-surfraw))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Anything Applications ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun anything-kill-buffers ()
+  "You can continuously kill buffer you selected."
+  (interactive)
+  (anything
+   '(((name . "Kill Buffers")
+      (candidates . anything-c-buffer-list)
+      (action
+       ("Kill Buffer" . (lambda (candidate)
+                          (kill-buffer candidate)
+                          (anything-kill-buffers)
+                          )))))
+   nil nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Interactive Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1958,7 +2012,7 @@ http://en.wikipedia.org/wiki/Ruby_Document_format")
 
 (defvar anything-c-source-emacs-lisp-expectations
   '((name . "Emacs Lisp Expectations")
-    (headline . "(desc \\|(expectations")
+    (headline . "(desc[ ]\\|(expectations")
     (condition . (eq major-mode 'emacs-lisp-mode)))
   "Show descriptions (desc) in Emacs Lisp Expectations.
 
@@ -2011,6 +2065,139 @@ See http://orgmode.org for the latest version.")
           (org-make-link-string (concat "*" (match-string 1)))))))
 
 ;; (anything 'anything-c-source-org-headline)
+
+;;; Anything yaoddmuse
+;; Be sure to have yaoddmuse.el installed
+;; install-elisp may be required if you want to install elisp file from here.
+(defvar anything-yaoddmuse-use-cache-file nil)
+(defvar anything-c-yaoddmuse-cache-file "~/.emacs.d/yaoddmuse-cache.el")
+(defvar anything-c-yaoddmuse-ew-cache nil)
+(defvar anything-c-source-yaoddmuse-emacswiki-edit-or-view
+  '((name . "Yaoddmuse Edit or View (EmacsWiki)")
+    (candidates . (lambda ()
+                    (if anything-yaoddmuse-use-cache-file
+                        (condition-case nil
+                            (progn
+                              (unless anything-c-yaoddmuse-ew-cache
+                                (load anything-c-yaoddmuse-cache-file)
+                                (setq anything-c-yaoddmuse-ew-cache
+                                      (gethash "EmacsWiki" yaoddmuse-pages-hash)))
+                              anything-c-yaoddmuse-ew-cache)
+                          (error nil))
+                        (yaoddmuse-update-pagename t)
+                        (gethash "EmacsWiki" yaoddmuse-pages-hash))))
+    (action . (("Edit page" . (lambda (candidate)
+                                (yaoddmuse-edit "EmacsWiki" candidate)))
+               ("Browse page" . (lambda (candidate)
+                                  (yaoddmuse-browse-page "EmacsWiki" candidate)))
+               ("Browse page other window" . (lambda (candidate)
+                                               (if (one-window-p)
+                                                   (split-window-vertically))
+                                               (yaoddmuse-browse-page "EmacsWiki" candidate)))
+               ("Browse diff" . (lambda (candidate)
+                                  (yaoddmuse-browse-page-diff "EmacsWiki" candidate)))
+               ("Copy URL" . (lambda (candidate)
+                               (kill-new (yaoddmuse-url "EmacsWiki" candidate))
+                               (message "Have copy page %s's URL to yank." candidate)))
+               ("Create page" . (lambda (candidate)
+                                  (yaoddmuse-edit "EmacsWiki" anything-input)))
+               ("Update cache" . (lambda (candidate)
+                                   (if anything-yaoddmuse-use-cache-file
+                                       (progn
+                                         (anything-yaoddmuse-cache-pages t)
+                                         (setq anything-c-yaoddmuse-ew-cache
+                                               (gethash "EmacsWiki" yaoddmuse-pages-hash)))
+                                       (yaoddmuse-update-pagename))))))
+    (action-transformer anything-c-yaoddmuse-action-transformer))) 
+
+;; (anything 'anything-c-source-yaoddmuse-emacswiki-edit-or-view)
+
+(defvar anything-c-source-yaoddmuse-emacswiki-post-library
+  '((name . "Yaoddmuse Post library (EmacsWiki)")
+    (init . (anything-yaoddmuse-init))
+    (candidates-in-buffer)
+    (action . (("Post library and Browse" . (lambda (candidate)
+                                              (yaoddmuse-post-file (find-library-name candidate)
+                                                                   "EmacsWiki"
+                                                                   (file-name-nondirectory (find-library-name candidate))
+                                                                   nil t)))
+               ("Post library" . (lambda (candidate)
+                                   (yaoddmuse-post-file (find-library-name candidate)
+                                                        "EmacsWiki"
+                                                        (file-name-nondirectory (find-library-name candidate)))))))))
+
+;; (anything 'anything-c-source-yaoddmuse-emacswiki-post-library)
+
+(defun anything-c-yaoddmuse-action-transformer (actions candidate)
+  "Allow the use of `install-elisp' only on elisp files."
+  (if (string-match "\.el$" candidate)
+      (append actions '(("Install Elisp" . (lambda (elm)
+                                             (install-elisp-from-emacswiki elm)))))
+      actions))
+
+(defun anything-yaoddmuse-cache-pages (&optional load)
+  "Fetch the list of files on emacswiki and create cache file.
+If load is non--nil load the file and feed `yaoddmuse-pages-hash'."
+  (interactive)
+  (yaoddmuse-update-pagename)
+  (save-excursion
+    (find-file anything-c-yaoddmuse-cache-file)
+    (erase-buffer)
+    (insert "(puthash \"EmacsWiki\" '(")
+    (loop for i in (gethash "EmacsWiki" yaoddmuse-pages-hash)
+       do
+          (insert (concat "(\"" (car i) "\") ")))
+    (insert ") yaoddmuse-pages-hash)\n")
+    (save-buffer)
+    (kill-buffer (current-buffer))
+    (when (or current-prefix-arg
+              load)
+      (load anything-c-yaoddmuse-cache-file))))
+
+(defun anything-yaoddmuse-emacswiki-edit-or-view ()
+  "Edit or View EmacsWiki page."
+  (interactive)
+  (anything 'anything-c-source-yaoddmuse-emacswiki-edit-or-view))
+
+(defun anything-yaoddmuse-emacswiki-post-library ()
+  "Post library to EmacsWiki."
+  (interactive)
+  (anything 'anything-c-source-yaoddmuse-emacswiki-post-library))
+
+(defun anything-yaoddmuse-init ()
+  "Init anything buffer status."
+  (let ((anything-buffer (anything-candidate-buffer 'global))
+        (library-list (yaoddmuse-get-library-list)))
+    (with-current-buffer anything-buffer
+      ;; Insert library name.
+      (dolist (library library-list)
+        (insert (format "%s\n" library)))
+      ;; Sort lines.
+      (sort-lines nil (point-min) (point-max)))))
+
+;;; Eev anchors
+(defvar anything-c-source-eev-anchor
+  '((name . "Anchors")
+    (init . (lambda ()
+              (setq anything-c-eev-anchor-buffer
+                    (current-buffer))))
+    (candidates . (lambda ()
+                    (condition-case nil
+                        (save-excursion
+                          (with-current-buffer anything-c-eev-anchor-buffer
+                            (goto-char (point-min))
+                            (let (anchors)
+                              (while (re-search-forward (format ee-anchor-format "\\([^\.].+\\)") nil t)
+                                (push (match-string-no-properties 1) anchors))
+                              (setq anchors (reverse anchors)))))
+                      (error nil))))
+    (persistent-action . (lambda (item)
+                           (ee-to item)
+                           (anything-match-line-color-current-line)))
+    (action . (("Goto link" . (lambda (item)
+                                (ee-to item)))))))
+
+;; (anything 'anything-c-source-eev-anchor)
 
 ;;;; <Misc>
 ;;; Picklist
@@ -2175,7 +2362,7 @@ removed."
                                        "yahoo" "translate"
                                        "codesearch" "genpkg"
                                        "genportage" "fast" 
-                                       "filesearching" "currency")
+                                       "currency")
   "All elements of this list will appear first in results.")
 (defvar anything-c-surfraw-use-only-favorites nil
   "If non-nil use only `anything-c-surfraw-favorites'.")
@@ -2250,6 +2437,78 @@ A list of search engines."
     (delayed)))
 
 ;; (anything 'anything-c-source-surfraw)
+
+;;; Emms
+
+(defun anything-emms-stream-edit-bookmark (elm)
+  "Change the information of current emms-stream bookmark from anything."
+  (interactive)
+  (let* ((cur-buf anything-current-buffer)
+         (bookmark (assoc elm emms-stream-list))
+         (name     (read-from-minibuffer "Description: "
+                                         (nth 0 bookmark)))
+         (url      (read-from-minibuffer "URL: "
+                                         (nth 1 bookmark)))
+         (fd       (read-from-minibuffer "Feed Descriptor: "
+                                         (int-to-string (nth 2 bookmark))))
+         (type     (read-from-minibuffer "Type (url, streamlist, or lastfm): "
+                                         (format "%s" (car (last bookmark))))))
+    (save-excursion
+      (emms-streams)
+      (when (re-search-forward (concat "^" name) nil t)
+        (beginning-of-line)
+        (emms-stream-delete-bookmark)
+        (emms-stream-add-bookmark name url (string-to-number fd) type)
+        (emms-stream-save-bookmarks-file)
+        (emms-stream-quit)
+        (switch-to-buffer cur-buf)))))
+
+(defun anything-emms-stream-delete-bookmark (elm)
+  "Delete an emms-stream bookmark from anything."
+  (interactive)
+  (let* ((cur-buf anything-current-buffer)
+         (bookmark (assoc elm emms-stream-list))
+         (name (nth 0 bookmark)))
+    (save-excursion
+      (emms-streams)
+      (when (re-search-forward (concat "^" name) nil t)
+        (beginning-of-line)
+        (emms-stream-delete-bookmark)
+        (emms-stream-save-bookmarks-file)
+        (emms-stream-quit)
+        (switch-to-buffer cur-buf)))))
+
+(defvar anything-c-source-emms-streams
+  '((name . "Emms Streams")
+    (init . (lambda ()
+              (emms-stream-init)))
+    (candidates . (lambda ()
+                    (mapcar 'car emms-stream-list)))
+    (action . (("Play" . (lambda (elm)
+                           (let* ((stream (assoc elm emms-stream-list))
+                                  (fn (intern (concat "emms-play-" (symbol-name (car (last stream))))))
+                                  (url (second stream)))
+                             (funcall fn url))))
+               ("Delete" . anything-emms-stream-delete-bookmark)
+               ("Edit" . anything-emms-stream-edit-bookmark)))
+    (volatile)))
+;; (anything 'anything-c-source-emms-streams)
+
+;; Don't forget to set `emms-source-file-default-directory'
+(defvar anything-c-source-emms-dired
+  '((name . "Music Directory")
+    (candidates . (lambda ()
+                    (cddr (directory-files emms-source-file-default-directory))))
+    (action . (("Play Directory" . (lambda (item)
+                                     (emms-play-directory
+                                      (expand-file-name item
+                                                        emms-source-file-default-directory))))
+               ("Open dired in file's directory" . (lambda (item)
+                                                     (anything-c-open-dired
+                                                      (expand-file-name item
+                                                                        emms-source-file-default-directory))))))
+    (volatile)))
+;; (anything 'anything-c-source-emms-dired)
 
 ;;; Jabber Contacts (jabber.el)
 (defun anything-c-jabber-online-contacts ()
@@ -2938,6 +3197,22 @@ other candidate transformers."
                    list)
           finally (return (nreverse list)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Marked candidates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun anything-c-list-marked-candidate ()
+  (interactive)
+  (let (marked-candidates)
+    (with-anything-window
+      (goto-char (point-min))
+      (beginning-of-line)
+      (while (anything-next-visible-mark)
+        (push (buffer-substring-no-properties (point-at-bol) (point-at-eol)) marked-candidates)))
+    marked-candidates))
+
+(defvar anything-c-marked-candidate-list nil)
+(defadvice anything-select-action (before save-marked-candidates () activate)
+  (setq anything-c-marked-candidate-list (anything-c-list-marked-candidate)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Adaptive Sorting of Candidates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar anything-c-adaptive-done nil
   "nil if history information is not yet stored for the current
@@ -3201,6 +3476,22 @@ If optional 2nd argument is non-nil, the file opened with `auto-revert-mode'.")
   (unless recenter
     (set-window-start (get-buffer-window anything-current-buffer) (point))))
 
+(defun anything-revert-buffer (candidate)
+  (with-current-buffer candidate
+    (when (buffer-modified-p)
+      (revert-buffer t t))))
+
+(defun anything-revert-marked-buffers (candidate)
+  (dolist (i anything-c-marked-candidate-list)
+    (anything-revert-buffer i)))
+
+(defun anything-kill-marked-buffers (candidate)
+  (dolist (i anything-c-marked-candidate-list)
+    (kill-buffer i)))
+
+(defun anything-delete-marked-files (candidate)
+  (dolist (i anything-c-marked-candidate-list)
+    (anything-c-delete-file i)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3214,11 +3505,10 @@ If optional 2nd argument is non-nil, the file opened with `auto-revert-mode'.")
            ("Switch to buffer other window" . switch-to-buffer-other-window)
            ("Switch to buffer other frame" . switch-to-buffer-other-frame)))
      ("Display buffer"   . display-buffer)
-     ("Revert buffer" . (lambda (elm)
-                          (with-current-buffer elm
-                            (when (buffer-modified-p)
-                              (revert-buffer t t)))))
-     ("Kill buffer"      . kill-buffer))
+     ("Revert buffer" . anything-revert-buffer)
+     ("Revert Marked buffers" . anything-revert-marked-buffers)
+     ("Kill buffer" . kill-buffer)
+     ("Kill Marked buffers" . anything-kill-marked-buffers))
     (candidate-transformer . anything-c-skip-boring-buffers))
   "Buffer or buffer name.")
 
@@ -3234,6 +3524,7 @@ If optional 2nd argument is non-nil, the file opened with `auto-revert-mode'.")
            ("Find file other frame" . find-file-other-frame)))
      ("Open dired in file's directory" . anything-c-open-dired)
      ("Delete file" . anything-c-delete-file)
+     ("Delete Marked files" . anything-delete-marked-files)
      ("Open file externally" . anything-c-open-file-externally)
      ("Open file with default tool" . anything-c-open-file-with-default-tool))
     (action-transformer anything-c-transform-file-load-el

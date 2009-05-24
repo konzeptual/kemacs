@@ -20,12 +20,24 @@
 (require 'grep-ed)
 
 
-(require 'rdebug)
+;; (require 'rdebug)
 
 ;; (add-to-list 'load-path (concat dotfiles-dir "vendor/"))
 (add-to-list 'load-path (concat dotfiles-dir "vendor/git-emacs"))
 (require 'git-emacs)
 
+
+(add-to-list 'load-path (concat dotfiles-dir "vendor/cucumber.el/"))
+(require 'cucumber-mode)
+
+(add-to-list 'load-path (concat dotfiles-dir "vendor/rspec-mode.el"))
+(require 'rspec-mode)
+
+;; BBDB
+;; (add-to-list 'load-path (concat dotfiles-dir "vendor/bbdb/lisp"))
+;; (require 'bbdb)
+;; (bbdb-initialize)
+;; (setq bbdb-north-american-phone-numbers-p nil)   
 
 
 (provide 'kemacs-test)
