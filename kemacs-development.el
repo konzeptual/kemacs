@@ -1,5 +1,4 @@
-;;; kemacs-development.el --- Configuration for better coding
-;;
+;;; kemacs-development.el --- Configuration for better coding;
 ;; Part of kEmacs
 
 (require 'kemacs-defuns)
@@ -54,10 +53,9 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 ;; enjoy automatic indentation of yanked text in the listed programming modes
 ;; Great stuff!
 (setq yank-indent-modes '(
-                          emacs-lisp-mode scheme-mode lisp-mode
-                                          c-mode c++-mode objc-mode latex-mode
-                                          plain-tex-mode php-mode
-                                          lisp-interaction-mode
+                          emacs-lisp-mode lisp-mode lisp-interaction-mode
+                                          c-mode c++-mode
+                                          php-mode 
 					  ruby-mode html-mode rhtml-mode
                                           ))
 
@@ -115,6 +113,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 		eshell-mode
 		rhtml-mode
 		fundamental-mode
+		rspec-mode
 		)))
 
 (add-hook 'emacs-lisp-mode-hook
