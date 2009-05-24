@@ -17,12 +17,13 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
+
 ;; Furthermore, you must activate font-lock-mode in Org buffers
                                         ;(add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (global-font-lock-mode t)
 
 ;; Switch on longlines-mode in org-mode
-(add-hook 'org-mode-hook 'longlines-mode) ; Org buffers only
+;; (add-hook 'org-mode-hook 'longlines-mode) ; Org buffers only
 
 (setq org-return-follows-link t)
 
@@ -31,11 +32,12 @@
 (setq org-directory "~/org")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (define-key global-map "\C-cr" 'org-remember)
+
 ;; setup templates for remember mode
 (setq org-remember-templates
       '(
-        ("Journal" ?j "* NEXT %U %?\n\n  %i"     "journal.org")
-        ("Todo"    ?t "* TODO %?   %^g\n  %i"   "todo.org"     "Todo list")
+        ("Journal" ?j "* ACTIVE %?\n\n  %i"     "journal.org")
+        ("Todo"    ?t "* TODO %?\n\n  %i\n"   "todo.org"     "Todo list")
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
@@ -128,12 +130,6 @@ Output: formatted list for generating gtd-agenda, like this:
 ;; Setup GTD views in agenda. constructed from variable org-gtd-tags
 (add-to-list 'org-agenda-custom-commands (append '("G") '("GTD Review") (cons org-gtd-review-setup ())))
 (add-to-list 'org-agenda-custom-commands (append '("g") '("GTD Block Agenda") (cons org-gtd-setup ())))
-
-;; Now we can start timer easily
-
-;; (add-hook 'org-agenda-mode-hook
-;; 	  (lambda () (define-key org-agenda-mode-map "\C-ct" 'tea-time)))
-(define-key global-map "\C-ct" 'tea-time)
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
