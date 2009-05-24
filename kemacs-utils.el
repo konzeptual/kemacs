@@ -53,6 +53,7 @@
 (setq yaoddmuse-username "KonstantinAntipin")
 
 ;; Mode for seting time intervals. Invaluable for my productivity.
+(add-to-list 'load-path (concat dotfiles-dir "vendor/tea-time"))
 (require 'tea-time)
 (setq tea-time-sound "/usr/share/sounds/purple/login.wav")
 (define-key global-map "\C-ct" 'tea-time)
