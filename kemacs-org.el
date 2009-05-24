@@ -36,7 +36,7 @@
 ;; setup templates for remember mode
 (setq org-remember-templates
       '(
-        ("Journal" ?j "* ACTIVE %?\n\n  %i"     "journal.org")
+        ("Journal" ?j "* NEXT %?\n\n  %i"     "journal.org")
         ("Todo"    ?t "* TODO %?\n\n  %i\n"   "todo.org"     "Todo list")
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
@@ -64,7 +64,7 @@
 ;; Manage TODO states
 (setq org-todo-keywords
       '(
-        (sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
+        (sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
         ))
 
 
@@ -122,9 +122,9 @@ Output: formatted list for generating gtd-agenda, like this:
     ))
 
 (setq org-agenda-custom-commands ())
-(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT-ACTIVE"))
+(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT"))
 
-(setq org-gtd-setup (cons '(todo "ACTIVE") (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO"))))
+(setq org-gtd-setup (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO")))
 
 
 ;; Setup GTD views in agenda. constructed from variable org-gtd-tags
