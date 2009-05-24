@@ -91,5 +91,13 @@ If strip-extension is not nil - remove file extension.
   (if window-system (hl-line-mode t))
   )
 
+
+
+(defun osru ()
+  "Connect to the osoznan.ru"
+  (interactive)
+  (find-file "/ssh:osoznanru@osoznan.ru:")
+  )
+
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
