@@ -71,9 +71,6 @@
 (add-hook 'rhtml-mode-hook
      	  (lambda () (rinari-launch)))
 
-;; (add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
-;; (require 'yasnippets-rails)
-
 
 (add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
 (require 'yasnippets-rails)
