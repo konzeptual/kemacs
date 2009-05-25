@@ -36,8 +36,8 @@
 ;; setup templates for remember mode
 (setq org-remember-templates
       '(
-        ("Journal" ?j "* NEXT %?\n\n  %i"     "journal.org")
-        ("Todo"    ?t "* TODO %?\n\n  %i\n"   "todo.org"     "Todo list")
+        ("Journal" ?j "* NEXT %?\n\n %^{Effort}p \n  %i"     "journal.org")
+        ("Todo"    ?t "* TODO %?\n\n %^{Effort}p \n %i"   "todo.org"     "Todo list")
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
@@ -67,6 +67,9 @@
         (sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
         ))
 
+
+(setq org-global-properties '(("Effort_ALL" . "0:05 0:10 0:15 0:20 0:30 0:40 
+0:50 1:00 1:30")))
 
 ;;; Obsololet. With smart search in agenda I do not need it anymore.
 ;; Add associated tags suuport for org-mode
