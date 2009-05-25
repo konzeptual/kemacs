@@ -99,5 +99,14 @@ If strip-extension is not nil - remove file extension.
   (find-file "/ssh:osoznanru@osoznan.ru:")
   )
 
+
+(defun split-horizontally-for-temp-buffers ()
+  "Split the window horizontally for temp buffers."
+  (when (one-window-p t) 
+    (split-window-horizontally)))
+
+(add-hook 'temp-buffer-setup-hook 'split-horizontally-for-temp-buffers)
+
+
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
