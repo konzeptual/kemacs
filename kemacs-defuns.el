@@ -102,7 +102,8 @@ If strip-extension is not nil - remove file extension.
 
 (defun split-horizontally-for-temp-buffers ()
   "Split the window horizontally for temp buffers."
-  (when (one-window-p t) 
+  (when (and (one-window-p t)
+	     (not (active-minibuffer-window)))
     (split-window-horizontally)))
 
 (add-hook 'temp-buffer-setup-hook 'split-horizontally-for-temp-buffers)
