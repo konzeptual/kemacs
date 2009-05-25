@@ -36,6 +36,11 @@
 ;; A better buffer list
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;; Replacements for standard functions.
+;; We are forcing horizontal splitting.
+(global-set-key "\C-x4b" 'switch-to-buffer-other-window-horizontal)
+(global-set-key "\C-x4f" 'find-file-other-window-horizontal)
+
 (global-set-key (kbd "C-x f") 'anything-for-files)
 ;;(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 

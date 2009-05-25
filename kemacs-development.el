@@ -124,10 +124,14 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 	  (lambda ()
 	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-files-in-current-dir ac-source-words-in-buffer))))
 
-;; (require 'auto-complete-ruby)
-;; (add-hook 'ruby-mode-hook
-;; 	  (lambda ()
-;; 	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools)))))
+(require 'auto-complete-ruby)
+(add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-words-in-buffer)) 
+	    (setq ac-omni-completion-sources '(("\\.\\=" ac-source-rcodetools)))
+))
+
+;; (setq ruby-mode-hook nil)
 
 (add-hook 'fundamental-mode-hook
 	  (lambda ()
