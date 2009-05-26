@@ -37,14 +37,14 @@
      (require 'flymake)
 
      ;; Invoke ruby with '-c' to get syntax checking
-     (defun flymake-ruby-init ()
-       (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                          'flymake-create-temp-inplace))
-              (local-file (file-relative-name
-                           temp-file
-                           (file-name-directory buffer-file-name))))
-         (list "ruby" (list "-c" local-file))))
-
+     ;; (defun flymake-ruby-init ()
+     ;;   (let* ((temp-file (flymake-init-create-temp-buffer-copy
+     ;;                      'flymake-create-temp-inplace))
+     ;;          (local-file (file-relative-name
+     ;;                       temp-file
+     ;;                       (file-name-directory buffer-file-name))))
+     ;;     (list "ruby" (list "-c" local-file))))
+     (flymake-ruby-init)
      (push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
      (push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
 
@@ -60,6 +60,51 @@
                    (local-set-key (kbd "C-c d")
                                   'flymake-display-err-menu-for-current-line)
                    (flymake-mode t))))))
+
+;;
+;;
+;; -- Make Flymake sane in Tramp --
+;;
+;; from http://github.com/mrflip/emacs-starter-kit/blob/4feb7dee32df94e91c6b6d44527b937d0f108057/mrflip-defuns.el
+
+(defun flymake-create-temp-intemp (file-name prefix)
+  "Return file name in temporary directory for checking FILE-NAME.
+This is a replacement for `flymake-create-temp-inplace'. The
+difference is that it gives a file name in
+`temporary-file-directory' instead of the same directory as
+FILE-NAME.
+ 
+For the use of PREFIX see that function.
+ 
+Note that not making the temporary file in another directory
+\(like here) will not if the file you are checking depends on
+relative paths to other files \(for the type of checks flymake
+makes)."
+  (unless (stringp file-name)
+    (error "Invalid file-name"))
+  (or prefix
+      (setq prefix "flymake"))
+  (let* ((name (concat
+                (file-name-nondirectory
+                 (file-name-sans-extension file-name))
+                "_" prefix))
+         (ext (concat "." (file-name-extension file-name)))
+         (temp-name (make-temp-file name nil ext))
+         )
+    (flymake-log 3 "create-temp-intemp: file=%s temp=%s" file-name temp-name)
+    temp-name))
+
+(defun flymake-ruby-init ()
+  (condition-case er
+      (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                         ;; 'flymake-create-temp-inplace
+			 'flymake-create-temp-intemp
+			 ))
+             (local-file (file-relative-name
+			  temp-file
+			  (file-name-directory buffer-file-name))))
+        (list rails-ruby-command (list "-c" local-file)))
+    ('error ())))
 
 
 (require 'inf-ruby)
