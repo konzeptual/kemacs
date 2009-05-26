@@ -69,7 +69,7 @@
 
 
 (setq org-global-properties '(("Effort_ALL" . "0:05 0:10 0:15 0:20 0:30 0:40 
-0:50 1:00 1:30")))
+0:50 1:00 1:30 2:00 2:30 3:00")))
 
 ;;; Obsololet. With smart search in agenda I do not need it anymore.
 ;; Add associated tags suuport for org-mode
