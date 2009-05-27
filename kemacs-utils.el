@@ -12,6 +12,8 @@
 ;; TRAMP mode
 (setq tramp-default-method "ssh")
 (setq tramp-default-user "antipin")
+;; Use the same policy for autosave as we do it locally.
+(setq tramp-backup-directory-alist backup-directory-alist)
 
 ;;; Dired
 ;;
