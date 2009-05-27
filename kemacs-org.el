@@ -7,10 +7,6 @@
 
 (require 'org)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Misc
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; The following lines are always needed.  Choose your own keys.
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
@@ -26,6 +22,9 @@
 ;; (add-hook 'org-mode-hook 'longlines-mode) ; Org buffers only
 
 (setq org-return-follows-link t)
+
+;; remember-mode
+;;--------------------------------------------------------------------
 
 ;; Setup remember-mode to quickly catch ideas and journaling
 (org-remember-insinuate)
@@ -43,6 +42,17 @@
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
         ("Songs"   ?s "* %?\n  %i\n"               "songs.org")
         ))
+
+;; start the clock if there is a ACTIVE todo tag in template
+(setq org-remember-clock-out-on-exit nil)
+(add-hook 'org-remember-before-finalize-hook 'my-start-clock-if-needed)
+(defun my-start-clock-if-needed ()
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward "* ACTIVE" nil t)
+      ;; (change-todo-state-on-old-clock)
+      (org-clock-in))))
+
 
 ;; Use all files at the org-directory + more for agenda view
 (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))))
@@ -64,7 +74,7 @@
 ;; Manage TODO states
 (setq org-todo-keywords
       '(
-        (sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
+        (sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")
         ))
 
 
@@ -88,7 +98,7 @@
 (setq org-gtd-tags '(
                      (kProject {^k.*} vhost osru)
                      (up)
-                     (tech symfony emacs orgmode stumpwm rails)
+                     (tech symfony emacs orgmode stumpwm rails radiant)
                      (everyday)
                      (relations)
                      (out)
@@ -124,10 +134,10 @@ Output: formatted list for generating gtd-agenda, like this:
     result
     ))
 
-(setq org-agenda-custom-commands ())
-(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT"))
+(setq org-agenda-custom-commands nil)
+(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT-ACTIVE"))
 
-(setq org-gtd-setup (cons '(todo "NEXT") (get-org-gtd-review-setup "/+TODO")))
+(setq org-gtd-setup (cons '(todo "NEXT|ACTIVE") (cons '(tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED") (get-org-gtd-review-setup "/+TODO"))))
 
 
 ;; Setup GTD views in agenda. constructed from variable org-gtd-tags
