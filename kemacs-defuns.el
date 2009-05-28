@@ -96,17 +96,41 @@ If strip-extension is not nil - remove file extension.
 (defun osru ()
   "Connect to the osoznan.ru"
   (interactive)
-  (find-file "/ssh:osoznanru@osoznan.ru:")
+  (find-file "/ssh:konsty@osoznan.ru:")
   )
 
 
-(defun split-horizontally-for-temp-buffers ()
+;;; Window management
+;;; 
+;; http://www.emacswiki.org/emacs/HorizontalSplitting
+(defun window-split-horizontally-if-alone ()
   "Split the window horizontally for temp buffers."
   (when (and (one-window-p t)
 	     (not (active-minibuffer-window)))
     (split-window-horizontally)))
 
-(add-hook 'temp-buffer-setup-hook 'split-horizontally-for-temp-buffers)
+;; Now emacs will split window horizontally for temporary buffers.
+(add-hook 'temp-buffer-setup-hook 'window-split-horizontally-if-alone)
+
+
+(defun switch-to-buffer-other-window-horizontal ()
+  "Replacement for switch-to-buffer-other-window.
+It does the same, but splits window horizontally."
+  (interactive)
+  (progn
+    (window-split-horizontally-if-alone)
+    (ido-switch-buffer-other-window)
+    ))
+
+
+(defun find-file-other-window-horizontal ()
+  "Replacement for find-file-other-window.
+It does the same, but splits window horizontally."
+  (interactive)
+  (progn
+    (window-split-horizontally-if-alone)
+    (ido-find-file-other-window)
+    ))
 
 
 (provide 'kemacs-defuns)
