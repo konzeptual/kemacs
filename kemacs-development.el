@@ -120,6 +120,10 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 	  (lambda ()
 	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-words-in-buffer ac-source-symbols))))
 
+(add-hook 'lisp-interaction-mode
+	  (lambda ()
+	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-words-in-buffer ac-source-symbols))))
+
 (add-hook 'eshell-mode-hook
 	  (lambda ()
 	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-files-in-current-dir ac-source-words-in-buffer))))
@@ -205,6 +209,8 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                          header-eof
                          ))
 
+;; bash
+(add-to-list 'auto-mode-alist '("\.bash.*" . shell-script-mode))
 
 (provide 'kemacs-development)
 ;;; kemacs-development.el ends here
