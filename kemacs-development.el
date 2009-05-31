@@ -57,7 +57,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                                           c-mode c++-mode
                                           php-mode 
 					  ruby-mode html-mode rhtml-mode
-					  css-mode
+					  css-mode html-mode
                                           ))
 
 (defadvice yank (after indent-region activate)
