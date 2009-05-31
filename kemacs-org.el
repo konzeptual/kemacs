@@ -99,7 +99,7 @@
                      (kProject {^k.*} vhost osru)
                      (up)
                      (tech symfony emacs orgmode stumpwm rails radiant)
-                     (everyday)
+                     (everyday email)
                      (relations)
                      (out)
                      ))
@@ -139,6 +139,7 @@ Output: formatted list for generating gtd-agenda, like this:
 
 (setq org-gtd-setup (cons '(todo "NEXT|ACTIVE") (cons '(tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED") (get-org-gtd-review-setup "/+TODO"))))
 
+(setq org-clock-sound "/usr/share/sounds/purple/login.wav")
 
 ;; Setup GTD views in agenda. constructed from variable org-gtd-tags
 (add-to-list 'org-agenda-custom-commands (append '("G") '("GTD Review") (cons org-gtd-review-setup ())))
