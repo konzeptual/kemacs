@@ -145,6 +145,14 @@ Output: formatted list for generating gtd-agenda, like this:
 (add-to-list 'org-agenda-custom-commands (append '("G") '("GTD Review") (cons org-gtd-review-setup ())))
 (add-to-list 'org-agenda-custom-commands (append '("g") '("GTD Block Agenda") (cons org-gtd-setup ())))
 
+;; Shortcut to the gtd agenda 
+(defun org-agenda-gtd ()
+  ""
+  (interactive)
+  (org-agenda "" "g") 
+  )
+(global-set-key "\C-cg" 'org-agenda-gtd)
+
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
 
