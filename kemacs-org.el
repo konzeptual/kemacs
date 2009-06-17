@@ -53,6 +53,10 @@
       ;; (change-todo-state-on-old-clock)
       (org-clock-in))))
 
+(defadvice org-clock-in (after sacha activate)
+  "Set task's status to 'ACTIVE' when starting clock."
+  (org-todo "ACTIVE"))
+
 
 ;; Use all files at the org-directory + more for agenda view
 (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))))
