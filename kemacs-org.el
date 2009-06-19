@@ -98,6 +98,9 @@
 ;;; Agenda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Easy incrase of effort estimate.
+(org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
+
 ;; Agenda-gtd is controlled by this list
 (setq org-gtd-tags '(
                      (kProject {^k.*} vhost osru)
