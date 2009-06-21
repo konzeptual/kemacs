@@ -37,6 +37,9 @@
 ;; sort plugin for dired.
 (require 'dired-sort-map)
 
+;; Try to guess target directory
+(setq dired-dwim-target t)
+
 ;; wget interface for Emacs
 (autoload 'wget "wget" "wget interface for Emacs." t)
 (autoload 'wget-web-page "wget" "wget interface to download whole web page." t) 
