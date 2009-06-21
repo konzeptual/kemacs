@@ -30,43 +30,14 @@
 
 (add-hook 'ruby-mode-hook 'coding-hook)
 
+
+
+;;
 ;;; Flymake
-
-(eval-after-load 'ruby-mode
-  '(progn
-     (require 'flymake)
-
-     ;; Invoke ruby with '-c' to get syntax checking
-     ;; (defun flymake-ruby-init ()
-     ;;   (let* ((temp-file (flymake-init-create-temp-buffer-copy
-     ;;                      'flymake-create-temp-inplace))
-     ;;          (local-file (file-relative-name
-     ;;                       temp-file
-     ;;                       (file-name-directory buffer-file-name))))
-     ;;     (list "ruby" (list "-c" local-file))))
-     (flymake-ruby-init)
-     (push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
-     (push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
-
-     (push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)
-           flymake-err-line-patterns)
-
-     (add-hook 'ruby-mode-hook
-               (lambda ()
-                 (when (and buffer-file-name
-                            (file-writable-p
-                             (file-name-directory buffer-file-name))
-                            (file-writable-p buffer-file-name))
-                   (local-set-key (kbd "C-c d")
-                                  'flymake-display-err-menu-for-current-line)
-                   (flymake-mode t))))))
-
 ;;
-;;
+
 ;; -- Make Flymake sane in Tramp --
-;;
 ;; from http://github.com/mrflip/emacs-starter-kit/blob/4feb7dee32df94e91c6b6d44527b937d0f108057/mrflip-defuns.el
-
 (defun flymake-create-temp-intemp (file-name prefix)
   "Return file name in temporary directory for checking FILE-NAME.
 This is a replacement for `flymake-create-temp-inplace'. The
@@ -105,6 +76,28 @@ makes)."
 			  (file-name-directory buffer-file-name))))
         (list rails-ruby-command (list "-c" local-file)))
     ('error ())))
+
+(eval-after-load 'ruby-mode
+  '(progn
+     (require 'flymake)
+
+     ;; Invoke ruby with '-c' to get syntax checking
+     (flymake-ruby-init)
+     (push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
+     (push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
+
+     (push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)
+           flymake-err-line-patterns)
+
+     (add-hook 'ruby-mode-hook
+               (lambda ()
+                 (when (and buffer-file-name
+                            (file-writable-p
+                             (file-name-directory buffer-file-name))
+                            (file-writable-p buffer-file-name))
+                   (local-set-key (kbd "C-c d")
+                                  'flymake-display-err-menu-for-current-line)
+                   (flymake-mode t))))))
 
 
 (require 'inf-ruby)
