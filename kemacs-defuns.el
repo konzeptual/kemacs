@@ -133,5 +133,12 @@ It does the same, but splits window horizontally."
     ))
 
 
+(defun fake-stdin-slurp (filename)
+  "Emulate stdin slurp using emacsclient hack"
+  (switch-to-buffer (generate-new-buffer "*stdin*"))
+  (insert-file filename)
+  (end-of-buffer))
+
+
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
