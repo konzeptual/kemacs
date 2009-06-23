@@ -98,12 +98,10 @@
 ;;; Agenda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Easy incrase of effort estimate.
-(org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
 
 ;; Agenda-gtd is controlled by this list
 (setq org-gtd-tags '(
-                     (kProject {^k.*} vhost osru)
+                     (kProject vhost osru)
                      (up)
                      (tech symfony emacs orgmode stumpwm rails radiant)
                      (everyday email)
@@ -159,6 +157,12 @@ Output: formatted list for generating gtd-agenda, like this:
   (org-agenda "" "g") 
   )
 (global-set-key "\C-cg" 'org-agenda-gtd)
+
+;; Easy incrase of effort estimate.
+(add-hook 'org-agenda-mode-hook
+	  (lambda ()
+	    (org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
+	    ))
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
