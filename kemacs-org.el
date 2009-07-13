@@ -164,6 +164,8 @@ Output: formatted list for generating gtd-agenda, like this:
 	    (org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
 	    ))
 
+(setq org-clock-out-switch-to-state "NEXT")
+
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
 
