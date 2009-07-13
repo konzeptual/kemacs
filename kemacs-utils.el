@@ -57,5 +57,8 @@
 (require 'yaoddmuse)
 (setq yaoddmuse-username "KonstantinAntipin")
 
+(add-to-list 'load-path (concat dotfiles-dir "vendor/git-emacs"))
+(require 'git-emacs)
+
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
