@@ -35,7 +35,7 @@
 ;; setup templates for remember mode
 (setq org-remember-templates
       '(
-        ("Journal" ?j "* NEXT %?\n\n %^{Effort}p \n  %i"     "journal.org")
+        ("Next"    ?n "* ACTIVE %?\n\n %^{Effort}p \n %i"   "todo.org"     "Todo list")
         ("Todo"    ?t "* TODO %?\n\n %^{Effort}p \n %i"   "todo.org"     "Todo list")
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
@@ -164,7 +164,8 @@ Output: formatted list for generating gtd-agenda, like this:
 	    (org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
 	    ))
 
-(setq org-clock-out-switch-to-state "NEXT")
+;; When clock-out, change state to "NEXT"
+;; (setq org-clock-out-switch-to-state "NEXT")
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
