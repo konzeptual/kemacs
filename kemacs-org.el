@@ -108,8 +108,8 @@
 (setq org-gtd-tags '(
                      (вхост vhost)
                      (ап up)
-                     (тех tech emacs orgmode)
-                     (будни everyday email)
+                     (тех имакс оргмод tech emacs orgmode)
+                     (будни мыло everyday)
                      (отношения relations)
                      (вне out)
                      ))
