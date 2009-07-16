@@ -2,9 +2,6 @@
 ;;
 ;; Part of kEmacs
 
-
-
-
 ;; Automatic install and update emacs-lisp packages
 (require 'auto-install)
 (setq auto-install-directory (concat dotfiles-dir "vendor/"))
@@ -59,6 +56,10 @@
 
 (add-to-list 'load-path (concat dotfiles-dir "vendor/git-emacs"))
 (require 'git-emacs)
+
+(add-to-list 'load-path (concat dotfiles-dir "vendor/autotest"))
+(require 'autotest)
+
 
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
