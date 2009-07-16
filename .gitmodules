@@ -7,3 +7,6 @@
 [submodule "vendor/org-mode"]
 	path = vendor/org-mode
 	url = git://repo.or.cz/org-mode.git
+[submodule "vendor/autotest"]
+	path = vendor/autotest
+	url = git@github.com:krick/autotest.el.git
