@@ -101,12 +101,12 @@
 
 ;; Agenda-gtd is controlled by this list
 (setq org-gtd-tags '(
-                     (kProject vhost osru)
-                     (up)
-                     (tech symfony emacs orgmode stumpwm rails radiant)
-                     (everyday email)
-                     (relations)
-                     (out)
+                     (вхост vhost)
+                     (ап up)
+                     (тех tech emacs orgmode)
+                     (будни everyday email)
+                     (отношения relations)
+                     (вне out)
                      ))
 
 (defun get-org-gtd-review-setup (todo-filter)
