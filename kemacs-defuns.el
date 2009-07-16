@@ -139,6 +139,10 @@ It does the same, but splits window horizontally."
   (insert-file filename)
   (end-of-buffer))
 
+(defun set-input-method-russian ()
+  ""
+  (set-input-method 'russian-computer)
+  )
 
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here

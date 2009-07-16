@@ -2,6 +2,8 @@
 ;;
 ;; Part of kEmacs
 
+(require 'kemacs-defuns)
+
 ;; Add to the first plase in the list
 (add-to-list 'load-path (concat dotfiles-dir "vendor/org-mode/lisp"))
 
@@ -42,6 +44,9 @@
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
         ("Songs"   ?s "* %?\n  %i\n"               "songs.org")
         ))
+
+;; Use russian layout in remember-mode
+(add-hook 'org-remember-mode-hook 'set-input-method-russian)
 
 ;; start the clock if there is a ACTIVE todo tag in template
 (setq org-remember-clock-out-on-exit nil)
