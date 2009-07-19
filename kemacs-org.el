@@ -17,11 +17,7 @@
 
 
 ;; Furthermore, you must activate font-lock-mode in Org buffers
-                                        ;(add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (global-font-lock-mode t)
-
-;; Switch on longlines-mode in org-mode
-;; (add-hook 'org-mode-hook 'longlines-mode) ; Org buffers only
 
 (setq org-return-follows-link t)
 
@@ -47,6 +43,7 @@
 
 ;; Use russian layout in remember-mode
 (add-hook 'org-remember-mode-hook 'set-input-method-russian)
+(add-hook 'org-agenda-mode-hook 'set-input-method-russian)
 
 ;; start the clock if there is a ACTIVE todo tag in template
 (setq org-remember-clock-out-on-exit nil)
@@ -107,8 +104,8 @@
 ;; Agenda-gtd is controlled by this list
 (setq org-gtd-tags '(
                      (вхост vhost)
-                     (ап up)
-                     (тех имакс оргмод tech emacs orgmode)
+                     (тех емакс оргмод tech emacs orgmode)
+                     (ап фан up)
                      (будни мыло everyday)
                      (отношения relations)
                      (вне out)
