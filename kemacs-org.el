@@ -103,7 +103,7 @@
 
 ;; Agenda-gtd is controlled by this list
 (setq org-gtd-tags '(
-                     (вхост vhost)
+                     (вхост ольга впоход vhost)
                      (тех емакс оргмод tech emacs orgmode)
                      (ап фан up)
                      (будни мыло everyday)
