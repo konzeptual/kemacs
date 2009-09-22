@@ -100,6 +100,8 @@
 ;;; Agenda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Always start on the current day
+(setq org-agenda-start-on-weekday nil)
 
 ;; Agenda-gtd is controlled by this list
 (setq org-gtd-tags '(
