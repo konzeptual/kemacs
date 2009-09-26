@@ -68,12 +68,9 @@
 
 ;; What tags do I frequently use
 (setq org-tag-alist '((:startgroup . nil)
-                      ("kProject" . ?k)
-                      ("up" . ?u)
-                      ("tech" . ?t)
-                      ("out" . ?o)
-                      ("relations" . ?r)
-                      ("everyday" . ?e)
+                      ("тех" . ?n)
+                      ("будни" . ?,)
+                      ("отношения" . ?j)
                       (:endgroup . nil)
                       ))
 
@@ -87,18 +84,12 @@
 (setq org-global-properties '(("Effort_ALL" . "0:05 0:10 0:15 0:20 0:30 0:40 
 0:50 1:00 1:30 2:00 2:30 3:00")))
 
-;;; Obsololet. With smart search in agenda I do not need it anymore.
-;; Add associated tags suuport for org-mode
-;; (require 'org-assoc-tags)
-;; (setq org-assoc-tags '(
-;;                        ("emacs" "tech")
-;;                        ("symfony" "tech")
-;;                        ("orgmode" "emacs" "tech")
-;;                        ))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Agenda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Skip sheduled if deadline is shown
+(setq org-agenda-skip-scheduled-if-deadline-is-shown t)
 
 ;; Always start on the current day
 (setq org-agenda-start-on-weekday nil)
@@ -169,7 +160,7 @@ Output: formatted list for generating gtd-agenda, like this:
 	    ))
 
 ;; When clock-out, change state to "NEXT"
-;; (setq org-clock-out-switch-to-state "NEXT")
+(setq org-clock-out-switch-to-state "NEXT")
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
