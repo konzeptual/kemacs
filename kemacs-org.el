@@ -159,8 +159,9 @@ Output: formatted list for generating gtd-agenda, like this:
 	    (org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
 	    ))
 
-;; When clock-out, change state to "NEXT"
-(setq org-clock-out-switch-to-state "NEXT")
+;; When clock-out, change state to "NEXT".
+;; We should do it more clever. Does not work together with clock-out-when-done
+;; (setq org-clock-out-switch-to-state "NEXT")
 
 (provide 'kemacs-org)
 ;;; kemacs-org.el ends here
