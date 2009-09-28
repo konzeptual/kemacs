@@ -153,11 +153,11 @@ Output: formatted list for generating gtd-agenda, like this:
   )
 (global-set-key "\C-cg" 'org-agenda-gtd)
 
-;; Easy incrase of effort estimate.
-(add-hook 'org-agenda-mode-hook
-	  (lambda ()
-	    (org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
-	    ))
+;; ;; Easy incrase of effort estimate.
+;; (add-hook 'org-agenda-mode-hook
+;; 	  (lambda ()
+;; 	    (org-defkey org-agenda-mode-map "E" 'org-clock-modify-effort-estimate)
+;; 	    ))
 
 ;; When clock-out, change state to "NEXT".
 ;; We should do it more clever. Does not work together with clock-out-when-done
