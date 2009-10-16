@@ -93,7 +93,7 @@ If strip-extension is not nil - remove file extension.
 
 
 
-(defun osru ()
+(defun dh ()
   "Connect to the osoznan.ru"
   (interactive)
   (find-file "/ssh:konsty@osoznan.ru:")
