@@ -114,6 +114,12 @@ makes)."
 (require 'yasnippets-rails)
 
 
+(add-to-list 'load-path (concat dotfiles-dir "vendor/cucumber.el/"))
+(require 'feature-mode)
+
+(add-to-list 'load-path (concat dotfiles-dir "vendor/rspec-mode.el"))
+(require 'rspec-mode)
+
 (provide 'kemacs-ruby)
 ;;; kemacs-ruby.el ends here
 
