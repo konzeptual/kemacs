@@ -79,6 +79,13 @@
 				  (lambda () (delete-windows-on "*Completions*")))))
 
 
+;; Calendar
+(setq calendar-week-start-day 0
+      calendar-day-name-array ["Понедельник" "Вторник" "Среда" "Четверг"
+			       "Пятница" "Суббота" "Воскресенье"]
+      calendar-month-name-array ["Январь" "Февраль" "Март" "Апрель" "Май" 
+				 "Июнь" "Июль" "Август" "Сентябрь"
+				 "Октябрь" "Ноябрь" "Декабрь"])
 
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
