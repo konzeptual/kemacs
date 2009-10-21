@@ -99,6 +99,12 @@ If strip-extension is not nil - remove file extension.
   (find-file "/ssh:konsty@osoznan.ru:")
   )
 
+(defun intovps ()
+  "Connect to the intoVps server"
+  (interactive)
+  (find-file "/ssh:konsty@89.33.197.84:/home/konsty")
+  )
+
 
 ;;; Window management
 ;;; 
