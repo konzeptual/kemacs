@@ -96,28 +96,28 @@
 
 (setq org-clock-sound "/usr/share/sounds/purple/login.wav")
 
-(setq org-agenda-custom-commands '(("g" "GTD Block Agenda"
-				    (
-				     (todo "NEXT|ACTIVE")
-				     (tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED")
-				     (tags-todo "вхост|ольга|впоход|vhost/+TODO")
-				     (tags-todo "тех|емакс|оргмод|tech|emacs|orgmode/+TODO")
-				     (tags-todo "ап|фан|up/+TODO")
-				     (tags-todo "будни|мыло|everyday/+TODO")
-				     (tags-todo "отношения|relations/+TODO")
-				     (tags-todo "вне|out/+TODO")
-				     (tags-todo "-вхост-ольга-впоход-vhost-тех-емакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO")
-				    ))
-				   
-				   ("G" "GTD Review"
-				    ((tags-todo "вхост|ольга|впоход|vhost/-TODO-NEXT-ACTIVE")
-				     (tags-todo "тех|емакс|оргмод|tech|emacs|orgmode/-TODO-NEXT-ACTIVE")
-				     (tags-todo "ап|фан|up/-TODO-NEXT-ACTIVE")
-				     (tags-todo "будни|мыло|everyday/-TODO-NEXT-ACTIVE")
-				     (tags-todo "отношения|relations/-TODO-NEXT-ACTIVE")
-				     (tags-todo "вне|out/-TODO-NEXT-ACTIVE")
-				     (tags-todo "-вхост-ольга-впоход-vhost-тех-емакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
-				   ))
+(setq org-agenda-custom-commands
+      '(("g" "GTD Block Agenda"
+	 ((todo "NEXT|ACTIVE" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "вхост|ольга|впоход|vhost/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "тех|емакс|оргмод|tech|emacs|orgmode/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "ап|фан|up/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "будни|мыло|everyday/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "отношения|relations/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "вне|out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "-вхост-ольга-впоход-vhost-тех-емакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  ))
+	
+	("G" "GTD Review"
+	 ((tags-todo "вхост|ольга|впоход|vhost/-TODO-NEXT-ACTIVE")
+	  (tags-todo "тех|емакс|оргмод|tech|emacs|orgmode/-TODO-NEXT-ACTIVE")
+	  (tags-todo "ап|фан|up/-TODO-NEXT-ACTIVE")
+	  (tags-todo "будни|мыло|everyday/-TODO-NEXT-ACTIVE")
+	  (tags-todo "отношения|relations/-TODO-NEXT-ACTIVE")
+	  (tags-todo "вне|out/-TODO-NEXT-ACTIVE")
+	  (tags-todo "-вхост-ольга-впоход-vhost-тех-емакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
+	))
 
 ;; Shortcut to the gtd agenda 
 (defun org-agenda-gtd ()
