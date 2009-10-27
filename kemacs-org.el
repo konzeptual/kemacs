@@ -94,56 +94,30 @@
 ;; Always start on the current day
 (setq org-agenda-start-on-weekday nil)
 
-;; Agenda-gtd is controlled by this list
-(setq org-gtd-tags '(
-                     (вхост ольга впоход vhost)
-                     (тех емакс оргмод tech emacs orgmode)
-                     (ап фан up)
-                     (будни мыло everyday)
-                     (отношения relations)
-                     (вне out)
-                     ))
-
-(defun get-org-gtd-review-setup (todo-filter)
-  "Returns list, that is used to set up custom gtd-view in agenda.
-Input: list of list of tags.
-Output: formatted list for generating gtd-agenda, like this:
-                         (tags-todo \"kProject/+TODO\")
-                         (tags-todo \"up/+TODO\")
-                         (tags-todo \"tech|symfony|emacs|orgmode/+TODO\")
-                          ....
-                         (tags-todo \"-kProject-up-tech-symfony-emacs-orgmode-...../+TODO\")
- "
-  (let (
-        (result ())
-        (all-other ())
-        )
-    (dolist (cur-tag-list org-gtd-tags)
-      (let (
-            (cur-config (mapconcat 'symbol-name cur-tag-list "|"))
-            )
-        (progn
-          (setq cur-config (cons (concat cur-config todo-filter) ()))
-          (add-to-list 'cur-config 'tags-todo)
-          (setq all-other (concat all-other "-" (mapconcat 'symbol-name cur-tag-list "-")))
-          )
-        (add-to-list 'result cur-config t)
-        ))
-    (setq all-other (cons 'tags-todo (cons (concat all-other todo-filter) ())))
-    (add-to-list 'result all-other t)
-    result
-    ))
-
-(setq org-agenda-custom-commands nil)
-(setq org-gtd-review-setup (get-org-gtd-review-setup "/-TODO-NEXT-ACTIVE"))
-
-(setq org-gtd-setup (cons '(todo "NEXT|ACTIVE") (cons '(tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED") (get-org-gtd-review-setup "/+TODO"))))
-
 (setq org-clock-sound "/usr/share/sounds/purple/login.wav")
 
-;; Setup GTD views in agenda. constructed from variable org-gtd-tags
-(add-to-list 'org-agenda-custom-commands (append '("G") '("GTD Review") (cons org-gtd-review-setup ())))
-(add-to-list 'org-agenda-custom-commands (append '("g") '("GTD Block Agenda") (cons org-gtd-setup ())))
+(setq org-agenda-custom-commands '(("g" "GTD Block Agenda"
+				    (
+				     (todo "NEXT|ACTIVE")
+				     (tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED")
+				     (tags-todo "вхост|ольга|впоход|vhost/+TODO")
+				     (tags-todo "тех|емакс|оргмод|tech|emacs|orgmode/+TODO")
+				     (tags-todo "ап|фан|up/+TODO")
+				     (tags-todo "будни|мыло|everyday/+TODO")
+				     (tags-todo "отношения|relations/+TODO")
+				     (tags-todo "вне|out/+TODO")
+				     (tags-todo "-вхост-ольга-впоход-vhost-тех-емакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO")
+				    ))
+				   
+				   ("G" "GTD Review"
+				    ((tags-todo "вхост|ольга|впоход|vhost/-TODO-NEXT-ACTIVE")
+				     (tags-todo "тех|емакс|оргмод|tech|emacs|orgmode/-TODO-NEXT-ACTIVE")
+				     (tags-todo "ап|фан|up/-TODO-NEXT-ACTIVE")
+				     (tags-todo "будни|мыло|everyday/-TODO-NEXT-ACTIVE")
+				     (tags-todo "отношения|relations/-TODO-NEXT-ACTIVE")
+				     (tags-todo "вне|out/-TODO-NEXT-ACTIVE")
+				     (tags-todo "-вхост-ольга-впоход-vhost-тех-емакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
+				   ))
 
 ;; Shortcut to the gtd agenda 
 (defun org-agenda-gtd ()
