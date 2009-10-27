@@ -98,7 +98,7 @@
 
 (setq org-agenda-custom-commands
       '(("g" "GTD Block Agenda"
-	 ((todo "NEXT|ACTIVE" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	 ((todo "NEXT|ACTIVE" )
 	  (tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "вхост|ольга|впоход|vhost/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "тех|имакс|оргмод|tech|emacs|orgmode/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
