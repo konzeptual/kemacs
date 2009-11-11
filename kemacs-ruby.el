@@ -120,6 +120,18 @@ makes)."
 (add-to-list 'load-path (concat dotfiles-dir "vendor/rspec-mode.el"))
 (require 'rspec-mode)
 
+(defun ruby-save-compilation-this-buffer ()
+  ""
+  (interactive)
+  (save-buffer)
+  (ruby-compilation-this-buffer)
+  )
+
+;; So we can invoke it easily.
+(eval-after-load 'ruby-mode
+  '(progn
+     (define-key ruby-mode-map (kbd "C-x t") 'ruby-save-compilation-this-buffer)))
+
 (provide 'kemacs-ruby)
 ;;; kemacs-ruby.el ends here
 
