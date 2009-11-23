@@ -35,6 +35,7 @@
       '(
         ("Next"    ?n "* ACTIVE %?\n\n %^{Effort}p \n %i"   "todo.org"     "Todo list")
         ("Todo"    ?t "* TODO %?\n\n %^{Effort}p \n %i"   "todo.org"     "Todo list")
+        ("Journal" ?j "* %U %?\n  %i\n"           "journal.org" )
         ("Idea"    ?i "* %?\n  %i\n  %a"           "ideas.org"    "New Ideas")
         ("Emacs"   ?e "* %?\n  %i\n  %a"           "tech.org"     "Learning emacs")
         ("Ubuntu"  ?u "* %?\n  %i\n  %a"           "tech.org"     "Ubuntu-box")
@@ -100,23 +101,23 @@
       '(("g" "GTD Block Agenda"
 	 ((todo "NEXT|ACTIVE" )
 	  (tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-	  (tags-todo "вхост|ольга|юля|бти|впоход|vhost/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "вхост|ольга|юля|бти|коб|впоход|vhost/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "тех|имакс|оргмод|tech|emacs|orgmode/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "ап|фан|up/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "будни|мыло|everyday/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "отношения|relations/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "вне|out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-	  (tags-todo "-вхост-ольга-юля-бти-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "-вхост-ольга-юля-бти-коб-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  ))
 	
 	("G" "GTD Review"
-	 ((tags-todo "вхост|ольга|юля|бти|впоход|vhost/-TODO-NEXT-ACTIVE")
+	 ((tags-todo "вхост|ольга|юля|бти|коб|впоход|vhost/-TODO-NEXT-ACTIVE")
 	  (tags-todo "тех|имакс|оргмод|tech|emacs|orgmode/-TODO-NEXT-ACTIVE")
 	  (tags-todo "ап|фан|up/-TODO-NEXT-ACTIVE")
 	  (tags-todo "будни|мыло|everyday/-TODO-NEXT-ACTIVE")
 	  (tags-todo "отношения|relations/-TODO-NEXT-ACTIVE")
 	  (tags-todo "вне|out/-TODO-NEXT-ACTIVE")
-	  (tags-todo "-вхост-ольга-юля-бти-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
+	  (tags-todo "-вхост-ольга-юля-бти-коб-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
 	))
 
 ;; Shortcut to the gtd agenda 
