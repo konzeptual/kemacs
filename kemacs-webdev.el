@@ -43,6 +43,7 @@
 ;; Switch on longlines-mode.
 (add-hook 'markdown-mode-hook 'longlines-mode)
 
+(add-to-list 'auto-mode-alist '(".radius$" . html-mode))
 (add-to-list 'auto-mode-alist '(".txt$" . markdown-mode))
 (add-to-list 'auto-mode-alist '(".markdown$" . markdown-mode))
 
