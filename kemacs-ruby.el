@@ -4,10 +4,6 @@
 
 ;; Half of the code from emacs-starter-kit
 
-(add-to-list 'load-path (concat dotfiles-dir "vendor/rinari"))
-(add-to-list 'load-path (concat dotfiles-dir "vendor/rinari/util"))
-(require 'rinari)
-(require 'ri)
 
 (eval-after-load 'ruby-mode
   '(progn
@@ -32,8 +28,6 @@
 (add-to-list 'completion-ignored-extensions ".rbc")
 
 (add-hook 'ruby-mode-hook 'coding-hook)
-
-
 
 ;;
 ;;; Flymake
@@ -71,72 +65,9 @@ makes)."
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
-;; (defun flymake-ruby-init ()
-;;   (condition-case er
-;;       (let* ((temp-file (flymake-init-create-temp-buffer-copy
-;;                          ;; 'flymake-create-temp-inplace
-;; 			 'flymake-create-temp-intemp
-;; 			 ))
-;;              (local-file (file-relative-name
-;; 			  temp-file
-;; 			  (file-name-directory buffer-file-name))))
-;;         (list rails-ruby-command (list "-c" local-file)))
-;;     ('error ())))
-
-;; (eval-after-load 'ruby-mode
-;;   '(progn
-;;      (require 'flymake)
-
-;;      ;; Invoke ruby with '-c' to get syntax checking
-;;      (flymake-ruby-init)
-;;      (push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
-;;      (push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
-
-;;      (push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)
-;;            flymake-err-line-patterns)
-
-;;      (add-hook 'ruby-mode-hook
-;;                (lambda ()
-;;                  (when (and buffer-file-name
-;;                             (file-writable-p
-;;                              (file-name-directory buffer-file-name))
-;;                             (file-writable-p buffer-file-name))
-;;                    (local-set-key (kbd "C-c d")
-;;                                   'flymake-display-err-menu-for-current-line)
-;;                    (flymake-mode t))))))
-
-
 (require 'inf-ruby)
 (require 'ruby-compilation)
 
-;;;rhtml-mode
-(add-to-list 'load-path "/home/kons/.emacs.d/vendor/rhtml/")
-(require 'rhtml-mode)
-(add-hook 'rhtml-mode-hook
-     	  (lambda () (rinari-launch)))
-
-
-(add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
-(require 'yasnippets-rails)
-
-
-(add-to-list 'load-path (concat dotfiles-dir "vendor/cucumber.el/"))
-(require 'feature-mode)
-
-(add-to-list 'load-path (concat dotfiles-dir "vendor/rspec-mode.el"))
-(require 'rspec-mode)
-
-;; (defun ruby-save-compilation-this-buffer ()
-;;   ""
-;;   (interactive)
-;;   (save-buffer)
-;;   (ruby-compilation-this-buffer)
-;;   )
-
-;; ;; So we can invoke it easily.
-;; (eval-after-load 'ruby-mode
-;;   '(progn
-;;      (define-key ruby-mode-map (kbd "C-x t") 'ruby-save-compilation-this-buffer)))
 
 (provide 'kemacs-ruby)
 ;;; kemacs-ruby.el ends here
