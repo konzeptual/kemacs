@@ -46,7 +46,7 @@
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
- '(org-agenda-files (quote ("~/org/ideas.org" "~/org/journal.org" "~/org/notes.org" "~/org/reading.org" "~/org/reference.org" "~/org/tech.org" "~/org/todo.org" "~/org/up.org"))))
+ '(safe-local-variable-values (quote ((encoding . utf-8) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby")))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

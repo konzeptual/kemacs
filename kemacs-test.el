@@ -11,7 +11,7 @@
 
 
 
-
+(setenv "PAGER" "/bin/cat")
 
 
 
