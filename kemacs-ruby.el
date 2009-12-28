@@ -4,7 +4,6 @@
 
 ;; Half of the code from emacs-starter-kit
 
-
 (eval-after-load 'ruby-mode
   '(progn
      (require 'ruby-compilation)
@@ -35,38 +34,36 @@
 
 ;; -- Make Flymake sane in Tramp --
 ;; from http://github.com/mrflip/emacs-starter-kit/blob/4feb7dee32df94e91c6b6d44527b937d0f108057/mrflip-defuns.el
-(defun flymake-create-temp-intemp (file-name prefix)
-  "Return file name in temporary directory for checking FILE-NAME.
-This is a replacement for `flymake-create-temp-inplace'. The
-difference is that it gives a file name in
-`temporary-file-directory' instead of the same directory as
-FILE-NAME.
+;; (defun flymake-create-temp-intemp (file-name prefix)
+;;   "Return file name in temporary directory for checking FILE-NAME.
+;; This is a replacement for `flymake-create-temp-inplace'. The
+;; difference is that it gives a file name in
+;; `temporary-file-directory' instead of the same directory as
+;; FILE-NAME.
  
-For the use of PREFIX see that function.
+;; For the use of PREFIX see that function.
  
-Note that not making the temporary file in another directory
-\(like here) will not if the file you are checking depends on
-relative paths to other files \(for the type of checks flymake
-makes)."
-  (unless (stringp file-name)
-    (error "Invalid file-name"))
-  (or prefix
-      (setq prefix "flymake"))
-  (let* ((name (concat
-                (file-name-nondirectory
-                 (file-name-sans-extension file-name))
-                "_" prefix))
-         (ext (concat "." (file-name-extension file-name)))
-         (temp-name (make-temp-file name nil ext))
-         )
-    (flymake-log 3 "create-temp-intemp: file=%s temp=%s" file-name temp-name)
-    temp-name))
+;; Note that not making the temporary file in another directory
+;; \(like here) will not if the file you are checking depends on
+;; relative paths to other files \(for the type of checks flymake
+;; makes)."
+;;   (unless (stringp file-name)
+;;     (error "Invalid file-name"))
+;;   (or prefix
+;;       (setq prefix "flymake"))
+;;   (let* ((name (concat
+;;                 (file-name-nondirectory
+;;                  (file-name-sans-extension file-name))
+;;                 "_" prefix))
+;;          (ext (concat "." (file-name-extension file-name)))
+;;          (temp-name (make-temp-file name nil ext))
+;;          )
+;;     (flymake-log 3 "create-temp-intemp: file=%s temp=%s" file-name temp-name)
+;;     temp-name))
 
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+;; (require 'flymake-ruby)
+;; (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
-(require 'inf-ruby)
-(require 'ruby-compilation)
 
 
 (provide 'kemacs-ruby)
