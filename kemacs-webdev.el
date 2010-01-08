@@ -45,6 +45,7 @@
 
 (add-to-list 'auto-mode-alist '(".radius$" . html-mode))
 (add-to-list 'auto-mode-alist '(".txt$" . markdown-mode))
+(add-to-list 'auto-mode-alist '(".md$" . markdown-mode))
 (add-to-list 'auto-mode-alist '(".markdown$" . markdown-mode))
 
 ;; The following is for proper handling russian text in preview in markdown mode
