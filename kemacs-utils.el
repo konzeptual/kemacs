@@ -87,5 +87,8 @@
 				 "Июнь" "Июль" "Август" "Сентябрь"
 				 "Октябрь" "Ноябрь" "Декабрь"])
 
+;; Use cat insted of less when possible
+(setenv "PAGER" "/bin/cat")
+
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
