@@ -61,8 +61,9 @@
   (org-todo "ACTIVE"))
 
 
-;; Use all files at the org-directory + more for agenda view
-(setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))))
+;;;; Use all files at the org-directory + more for agenda view
+;; (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "/[a-zA-Z]*.org"))))
+(setq org-agenda-files '("~/org/notes.org" "~/org/projects.org" "~/org/tech.org" "~/org/todo.org"))
 
 ;; Use ido whe possible
 (setq org-completion-use-ido t)
