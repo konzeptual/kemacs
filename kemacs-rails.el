@@ -6,6 +6,8 @@
 (add-to-list 'load-path (concat dotfiles-dir "vendor/rinari/util"))
 (require 'rinari)
 (require 'ri)
+(require 'inf-ruby)
+(require 'ruby-compilation)
 
 ;;;rhtml-mode
 (add-to-list 'load-path "/home/kons/.emacs.d/vendor/rhtml/")

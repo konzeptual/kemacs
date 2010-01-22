@@ -22,6 +22,7 @@
 (require 'kemacs-development)
 (require 'kemacs-webdev)
 (require 'kemacs-ruby)
+(require 'kemacs-rails)
 (require 'kemacs-org)
 (require 'kemacs-bindings)
 (require 'kemacs-utils)
