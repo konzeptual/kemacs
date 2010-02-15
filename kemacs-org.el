@@ -102,23 +102,23 @@
       '(("g" "GTD Block Agenda"
 	 ((todo "NEXT|ACTIVE" )
 	  (tags "PROJECT/-TODO-NEXT-ACTIVE-WAITING-SOMEDAY-DONE-CANCELED"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-	  (tags-todo "вхост|ольга|юля|бти|коб|впоход|vhost/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "вхост|ольга|юля|бти|коб|наш|впоход|vhost/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "тех|имакс|оргмод|tech|emacs|orgmode/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "ап|фан|up/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "будни|мыло|everyday/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "отношения|relations/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  (tags-todo "вне|out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-	  (tags-todo "-вхост-ольга-юля-бти-коб-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	  (tags-todo "-вхост-ольга-юля-бти-коб-наш-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/+TODO"((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	  ))
 	
 	("G" "GTD Review"
-	 ((tags-todo "вхост|ольга|юля|бти|коб|впоход|vhost/-TODO-NEXT-ACTIVE")
+	 ((tags-todo "вхост|ольга|юля|бти|коб|наш|впоход|vhost/-TODO-NEXT-ACTIVE")
 	  (tags-todo "тех|имакс|оргмод|tech|emacs|orgmode/-TODO-NEXT-ACTIVE")
 	  (tags-todo "ап|фан|up/-TODO-NEXT-ACTIVE")
 	  (tags-todo "будни|мыло|everyday/-TODO-NEXT-ACTIVE")
 	  (tags-todo "отношения|relations/-TODO-NEXT-ACTIVE")
 	  (tags-todo "вне|out/-TODO-NEXT-ACTIVE")
-	  (tags-todo "-вхост-ольга-юля-бти-коб-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
+	  (tags-todo "-вхост-ольга-юля-бти-коб-наш-впоход-vhost-тех-имакс-оргмод-tech-emacs-orgmode-ап-фан-up-будни-мыло-everyday-отношения-relations-вне-out/-TODO-NEXT-ACTIVE")))
 	))
 
 ;; Shortcut to the gtd agenda 
