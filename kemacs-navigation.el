@@ -42,7 +42,7 @@
 
 ;; "correct" order of the buffers with multiple frames
 ;; Do not show buffers from the other frames first.
-(require 'flobl)
+;; (require 'flobl)
 
 ;;  automatically save places in files where you were editing.
 ;;  Restore them on the next visit
