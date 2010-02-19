@@ -9,6 +9,20 @@
 (require 'inf-ruby)
 (require 'ruby-compilation)
 
+;; define some keys in rinari-mode
+(add-hook 'rinari-minor-mode-hook
+	  (lambda ()
+	    (define-key rinari-minor-mode-map (kbd "C-c ; W") 'rinari-restart-web-server)
+	    )
+	  )
+
+(defun rinari-restart-web-server ()
+  "Restart web server"
+  (interactive)
+  (if (buffer-exists "*server*") (kill-buffer "*server*"))
+  (rinari-web-server)
+  )
+
 ;;;rhtml-mode
 (add-to-list 'load-path "/home/kons/.emacs.d/vendor/rhtml/")
 (require 'rhtml-mode)
