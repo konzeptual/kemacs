@@ -150,5 +150,10 @@ It does the same, but splits window horizontally."
   (set-input-method 'russian-computer)
   )
 
+(defun buffer-exists (bufname)
+  "Check if buffer exists"
+  (not (eq nil (get-buffer bufname)))
+  ) 
+
 (provide 'kemacs-defuns)
 ;;; kemacs-defuns.el ends here
