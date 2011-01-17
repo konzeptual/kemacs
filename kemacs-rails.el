@@ -16,12 +16,25 @@
 	    )
 	  )
 
-(defun rinari-restart-web-server ()
+;; (interactive)
+;; (if (buffer-exists "*rails*") (kill-buffer "*rails*"))
+;; (rinari-web-server)
+;; )
+
+(defun rinari-restart-web-server (&optional edit-cmd-args)
   "Restart web server"
-  (interactive)
-  (if (buffer-exists "*server*") (kill-buffer "*server*"))
-  (rinari-web-server)
-  )
+  (interactive "P")
+  (let ((rinari-web-server-buffer "*rails*"))
+    (if (get-buffer rinari-web-server-buffer)
+	(progn
+	  (set-process-query-on-exit-flag (get-buffer-process rinari-web-server-buffer) nil)
+	  (kill-buffer rinari-web-server-buffer))
+      nil)
+    (rinari-web-server edit-cmd-args)))
+
+;; Usually I need rinary in git repos
+(add-hook 'git-status-mode-hook 'rinari-minor-mode)
+
 
 ;;;rhtml-mode
 (add-to-list 'load-path "/home/kons/.emacs.d/vendor/rhtml/")
