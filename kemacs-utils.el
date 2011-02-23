@@ -40,10 +40,10 @@
 ;; wget interface for Emacs
 (autoload 'wget "wget" "wget interface for Emacs." t)
 (autoload 'wget-web-page "wget" "wget interface to download whole web page." t) 
-(setq wget-download-directory "~/downloads")
+;; (setq wget-download-directory "~/downloads")
 ;;  If current directory is under the wget-download-directory, set
 ;; download directory current dir.  Otherwise, ask download directory. 
-(setq wget-download-directory-filter #'wget-download-dir-filter-current-dir)
+;; (setq wget-download-directory-filter #'wget-download-dir-filter-current-dir)
 
 
 ;; Enhancement on term. Allow multiple instances of terminal + bonuses.
@@ -73,10 +73,20 @@
 ;; interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)
 
+;;; Shell mode
+(setq ansi-color-names-vector ; better contrast colors
+      ["black" "red4" "green4" "yellow4"
+       "blue3" "magenta4" "cyan4" "white"])
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+;; (add-hook 'shell-mode-hook '(lambda () (toggle-truncate-lines 1)))
+
+;; in shell-mode prompt is read only
+(setq comint-prompt-read-only t)
+
 ;; make completion buffers disappear after 3 seconds.
-(add-hook 'completion-setup-hook
-	  (lambda () (run-at-time 3 nil
-				  (lambda () (delete-windows-on "*Completions*")))))
+;; (add-hook 'completion-setup-hook
+;; 	  (lambda () (run-at-time 3 nil
+;; 				  (lambda () (delete-windows-on "*Completions*")))))
 
 
 ;; Calendar
@@ -89,6 +99,11 @@
 
 ;; Use cat insted of less when possible
 (setenv "PAGER" "/bin/cat")
+
+;; Edit grep results
+;; Opens files, edit and saves them from grep-buffer.
+(require 'grep-ed)
+
 
 (provide 'kemacs-utils)
 ;;; kemacs-utils.el ends here
