@@ -37,20 +37,21 @@
 
 
 ;;;rhtml-mode
-(add-to-list 'load-path "/home/kons/.emacs.d/vendor/rhtml/")
+(add-to-list 'load-path "/home/konsty/.emacs.d/vendor/rhtml/")
 (require 'rhtml-mode)
 (add-hook 'rhtml-mode-hook
      	  (lambda () (rinari-launch)))
 
-(add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
+;;(add-to-list 'load-path (concat dotfiles-dir "vendor/yasnippets-rails"))
+(add-to-list 'load-path "/home/konsty/.emacs.d/vendor/yasnippets-rails/")
 (require 'yasnippets-rails)
 
 
 (add-to-list 'load-path (concat dotfiles-dir "vendor/cucumber.el/"))
 (require 'feature-mode)
 
-(add-to-list 'load-path (concat dotfiles-dir "vendor/rspec-mode.el"))
-(require 'rspec-mode)
+;;(add-to-list 'load-path (concat dotfiles-dir "vendor/rspec-mode.el"))
+;;(require 'rspec-mode)
 
 (provide 'kemacs-rails)
 ;;; kemacs-rails.el ends here

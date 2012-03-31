@@ -57,8 +57,8 @@
 (add-to-list 'load-path (concat dotfiles-dir "vendor/git-emacs"))
 (require 'git-emacs)
 
-(add-to-list 'load-path (concat dotfiles-dir "vendor/autotest"))
-(require 'autotest)
+;; (add-to-list 'load-path (concat dotfiles-dir "vendor/autotest"))
+;; (require 'autotest)
 
 ;;; Shell-mode
 ;; http://snarfed.org/space/why I don't run shells inside Emacs

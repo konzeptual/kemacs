@@ -6,7 +6,7 @@
 ;; (add-to-list 'load-path (concat dotfiles-dir "/home/kons/.emacs.d/vendor/yasnippets-rspec/"))
 ;; (require 'yasnippets-rspec)
 
-(require 'jekyll)
+;; (require 'jekyll)
 
 
 (provide 'kemacs-test)

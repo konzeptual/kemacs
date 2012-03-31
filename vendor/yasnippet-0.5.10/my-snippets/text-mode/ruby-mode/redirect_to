@@ -1,5 +1,0 @@
-#contributor : Konstantin Antipin <antipin.konstantin@googlemail.com>
-#name : redirect_to :action => 'index'
-# --
-redirect_to :action => '${1:index}'$0
-

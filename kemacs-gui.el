@@ -7,9 +7,12 @@
 
 ;; nice looking theme. Good for my eyes
 (require 'color-theme)
-(setq color-theme-is-global t)
+(color-theme-initialize)
+;;(setq color-theme-is-global t)
 (color-theme-charcoal-black)
-;; (load-file "/home/kons/.emacs.d/vendor/blackboard.el")
+;;(color-theme-robin-hood)
+		
+;;(load-file "/home/kons/.emacs.d/vendor/blackboard.el")
 
 
 ;; will allow you to type just "y" instead of "yes" when you exit.

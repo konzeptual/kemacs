@@ -1,0 +1,40 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/konsty/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/konsty/.emacs.d/"
+ "/home/konsty/.emacs.d/.git/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "kemacs-test.el"
+ "kemacs-utils.el"
+ "kemacs-development.el"
+ "kemacs-webdev.el"
+ "kemacs-rails.el"
+ "config"
+ ".gitmodules"
+ "init.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/konsty/.emacs.d/" (20342 54680) "kemacs-rails.el" "README" "kemacs-private.el" "vendor/" "kemacs-registers.el" "kemacs-defuns.el" "init.el" "kemacs-ruby.el" "kemacs-navigation.el" "./" "kemacs-development.el" ".gitmodules" "../" "anything-c-adaptive-history" "kemacs-utils.el" "kemacs-russification.el" "kemacs-org.el" "kemacs-bindings.el" "init_bash.sh" "places" ".git/" "kemacs-anything.el" "kemacs-test.el" "kemacs-misc.el" "kemacs-gui.el" ".emacs_dircolors" "auto-save-list/" "kemacs-webdev.el")
+
+ ("/home/konsty/.emacs.d/.git/" (20342 54253) "branches/" "refs/" "config" "./" "config~" "../" "index" "hooks/" "HEAD" "description" "modules/" "packed-refs" "info/" "objects/" "logs/")
+
+ ("/home/konsty/.emacs.d/vendor/" (20342 50179) "flymake-ruby.el" "yasnippets-rspec/" "ri.el" "git-emacs/" "anything-complete.el" "anything-config.el" "multi-term.el" "auto-complete.el" "php-completion.el" "rspec-mode.el/" "rinari/" "yaoddmuse.el" "findr.el" "ac-anything.el" "./" "anything-auto-install.el" "anything.el" "markdown-mode.el" "rhtml/" "../" "jump.el" "grep-ed.el" "anything-match-plugin.el" "dired-sort-map.el" "yasnippet/" "cucumber.el/" "flymake-php.el" "someday/" "inflections.el" "pcmpl-rake.el" "flobl.el" "yasnippets-rails/" "smex/" "cursor-chg.el" "smex.el" "yasnippet-0.5.10/" "autotest/" "auto-complete-yasnippet.el" "auto-complete-ruby.el" "auto-install.el" "php-mode.el" "run-assoc.el" "org-mode/" "nxhtml/")
+
+ ("/home/konsty/.emacs.d/vendor/yasnippet/" (20342 50988) "yasnippet-tests.el" "extras/" "doc/" "./" ".gitmodules" "Rakefile" "../" "dropdown-list.el" "yasnippet.el" "README.mdown" "snippets/" "my-snippets/" ".git/" "yasnippet-debug.el" ".gitignore")
+
+ ("/home/konsty/" (20342 49257) ".goutputstream-LNYIBW" ".macromedia/" ".xinput.d/" ".Xauthority" ".bash_history" ".emacs.d/" ".thumbnails/" ".gksu.lock" ".bash_logout" ".gnome2/" "Рабочий стол/" ".gimp-2.6/" ".dbus/" ".compiz-1/" ".gnomerc" ".mission-control/" ".bash_aliases" ".toprc" "projects/" ".pulse-cookie" "./" ".bashrc" ".profile" "Изображения/" ".ssh/" ".bash_profile" "../" ".gvfs/" ".local/" "Ubuntu One/" ".dircolors" "Документы/" "dell_laptop/" ".esd_auth" ".stumpwm.d/" ".dmrc" "Видео/" ".fontconfig/" "tmp/" ".gegl-0.0/" "examples.desktop" ".goutputstream-B3T8AW" ".config/" ".ICEauthority" ".bash_env" ".gtk-bookmarks" ".xsession-errors" ".gemrc" "Музыка/" "Загрузки/" ".gnome2_private/" "Шаблоны/" "backup/" ".keysnail.js" ".gstreamer-0.10/" ".dotrc/" "Общедоступные/" ".mozilla/" ".Skype/" ".pulse/" ".cache/" ".stumpwmrc" ".autotest" ".adobe/" ".gconf/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

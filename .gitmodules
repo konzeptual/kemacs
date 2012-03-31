@@ -1,12 +1,25 @@
-[submodule "vendor/yasnippets-rspec"]
-	path = vendor/yasnippets-rspec
-	url = git@github.com:krick/yasnippets-rspec.git
-[submodule "vendor/rspec-mode.el"]
-	path = vendor/rspec-mode.el
-	url = git://github.com/pat-maddox/rspec-mode.el.git
+#[submodule "vendor/rspec-mode.el"]
+#	path = vendor/rspec-mode.el
+#	url = git://github.com/pat-maddox/rspec-mode.el.git
 [submodule "vendor/org-mode"]
 	path = vendor/org-mode
 	url = git://repo.or.cz/org-mode.git
-[submodule "vendor/autotest"]
-	path = vendor/autotest
-	url = git@github.com:krick/autotest.el.git
+# [submodule "vendor/autotest"]
+# 	path = vendor/autotest
+# 	url = git@github.com:krick/autotest.el.git
+[submodule "vendor/rinari"]
+	path = vendor/rinari
+	url = git://github.com/eschulte/rinari.git
+[submodule "vendor/git-emacs"]
+	path = vendor/git-emacs
+	url = git://github.com/tsgates/git-emacs.git
+[submodule "vendor/rhtml"]
+	path = vendor/rhtml
+	url = git://github.com/eschulte/rhtml.git
+[submodule "vendor/smex"]
+	path = vendor/smex
+	url = git://github.com/nonsequitur/smex.git
+[submodule "vendor/yasnippets-rails"]
+	path = vendor/yasnippets-rails
+	url = git://github.com/krick/yasnippets-rails.git
+

@@ -132,7 +132,7 @@ If no region is selected and current line is not blank then comment out current 
 	  (lambda ()
 	    (setq ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-files-in-current-dir ac-source-words-in-buffer))))
 
-(require 'auto-complete-ruby)
+;;(require 'auto-complete-ruby)
 
 ;; (add-hook 'ruby-mode-hook
 ;; 	  (lambda ()

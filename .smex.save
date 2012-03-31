@@ -1,0 +1,16 @@
+
+;; ----- smex-history -----
+(
+ 2C-associate-buffer
+ 2C-command
+ 2C-split
+ 2C-two-columns
+ 5x5
+ 5x5-crack
+ 5x5-crack-mutating-best
+)
+
+;; ----- smex-data -----
+(
+ 
+)
